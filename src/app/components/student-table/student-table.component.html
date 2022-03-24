@@ -1,0 +1,48 @@
+<div class="mat-elevation-z8">
+  <table mat-table class="full-width-table" matSort matSortActive="average" matSortDirection="desc" aria-label="Elements">
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+      <td mat-cell *matCellDef="let row">{{row.fullName}}</td>
+    </ng-container>
+
+    <!-- Birthday Column -->
+    <ng-container matColumnDef="birthday">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Birthday</th>
+      <td mat-cell *matCellDef="let row">{{row.birthday | date: 'longDate'}}</td>
+    </ng-container>
+
+    <!-- Address Column -->
+    <ng-container matColumnDef="address">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Address</th>
+      <td mat-cell *matCellDef="let row">{{row.address}}</td>
+    </ng-container>
+
+    <!-- Phone Column -->
+    <ng-container matColumnDef="phone">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Phone</th>
+      <td mat-cell *matCellDef="let row">{{row.phone}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="average">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Califications Average</th>
+      <td mat-cell *matCellDef="let row">
+        {{row.average | number: '1.1-1'}}
+        <mat-icon class="excellent-icon" *ngIf="isExcellentStudent(row)" aria-hidden="false">emoji_events</mat-icon>
+        <mat-icon class="excellent-icon" *ngIf="isFailedStudent(row)" aria-hidden="false">thumb_down_alt</mat-icon>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="setStyleByCalification(row)"></tr>
+  </table>
+
+  <mat-paginator #paginator
+      [length]="dataSource?.data?.length"
+      [pageIndex]="0"
+      [pageSize]="10"
+      [pageSizeOptions]="[5, 10, 20]"
+      aria-label="Select page">
+  </mat-paginator>
+</div>

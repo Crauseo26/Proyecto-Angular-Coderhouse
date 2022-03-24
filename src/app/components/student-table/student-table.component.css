@@ -1,0 +1,11 @@
+.full-width-table {
+  width: 100%;
+}
+
+.excellent-student {
+  background-color: rgba(133, 211, 169, 0.45);
+}
+
+.failed-student{
+  background-color: rgba(246, 114, 140, 0.45);
+}

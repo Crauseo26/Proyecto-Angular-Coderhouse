@@ -1,0 +1,11 @@
+.dialog-container{
+  min-width: 30rem;
+  min-height: 20rem;
+  display: flex;
+  flex-flow: column wrap;
+}
+
+.alert{
+  color: #f44336;
+  text-align: left;
+}

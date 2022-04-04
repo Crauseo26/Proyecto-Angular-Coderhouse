@@ -3,7 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import {StudentsDataSource, Student} from './student-table-datasource';
-import {EXCELLENT_STUDENT_THRESHOLD, FAILED_STUDENT_THRESHOLD} from "../../shared/constants/constants";
+import {EXCELLENT_STUDENT_THRESHOLD, FAILED_STUDENT_THRESHOLD} from "../../../shared/constants/constants";
 
 
 @Component({
@@ -34,6 +34,10 @@ export class StudentTableComponent implements AfterViewInit {
     this.students = this.dataSource.data;
     this.excellentStudents = this.getExcellentStudents();
     this.failedStudents = this.getFailedStudents();
+  }
+
+  public refresh(): void {
+    this.table.renderRows();
   }
 
   public getExcellentStudents(): Student[]{

@@ -13,14 +13,24 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
-import { StudentTableComponent } from './components/student-table/student-table.component';
+import { StudentTableComponent } from './components/content/student-table/student-table.component';
+import {ContentComponent} from "./components/content/content.component";
+import { AddStudentDialogComponent } from './components/content/add-student-dialog/add-student-dialog.component';
+import {MatDialogModule} from "@angular/material/dialog";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatSelectModule} from "@angular/material/select";
+import {MatNativeDateModule} from "@angular/material/core";
+import {MatInputModule} from "@angular/material/input";
 
 @NgModule({
   declarations: [
     AppComponent,
     NavComponent,
     StudentTableComponent,
-    StudentTableComponent
+    ContentComponent,
+    AddStudentDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -33,7 +43,14 @@ import { StudentTableComponent } from './components/student-table/student-table.
     MatIconModule,
     MatTableModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    MatDatepickerModule, MatNativeDateModule,
+    MatSelectModule,
+    FormsModule
 
   ],
   providers: [],

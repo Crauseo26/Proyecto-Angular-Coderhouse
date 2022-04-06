@@ -21,7 +21,8 @@ export class StudentTableComponent implements AfterViewInit {
   private failedStudents!: Student[];
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['average', 'name', 'birthday', 'phone'];
+  public displayedColumns = ['average', 'fullName', 'actions'];
+
 
   constructor() {
     this.dataSource = new StudentsDataSource();

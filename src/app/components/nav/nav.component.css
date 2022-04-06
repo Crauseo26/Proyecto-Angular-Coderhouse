@@ -1,10 +1,31 @@
 .sidenav-container {
   height: 100%;
+  background-color: transparent;
+}
+.sidenav {
+  margin-top: 64px;
+  padding: 0;
+  width: 5rem;
 }
 
-.sidenav {
-  width: 200px;
+.mat-nav-list{
+  padding: 0;
+  text-align: center;
 }
+mat-sidenav-content{
+  margin-left: 0px;
+}
+
+.toolbar-title{
+  font-weight: 500;
+  text-transform: uppercase;
+  margin-left: 3rem;
+}
+
+.mat-fab{
+  border-radius: 0%;
+}
+
 
 .sidenav .mat-toolbar {
   background: inherit;
@@ -14,4 +35,19 @@
   position: sticky;
   top: 0;
   z-index: 1;
+}
+
+.menu-item {
+  margin: 1rem;
+  font-weight: 500;
+}
+
+.menu-icon {
+  margin-right: 0.3rem;
+}
+
+.option-label{
+  float: right;
+  background-color: #673ab7;
+  box-shadow: rgba(0, 0, 0, 0.45);
 }

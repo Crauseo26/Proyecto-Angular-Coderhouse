@@ -23,6 +23,10 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatSelectModule} from "@angular/material/select";
 import {MatNativeDateModule} from "@angular/material/core";
 import {MatInputModule} from "@angular/material/input";
+import {MatDividerModule} from '@angular/material/divider';
+import { NavMenuComponent } from './components/nav/nav-menu/nav-menu.component';
+import { TooltipDirective } from './shared/directives/tooltip.directive';
+
 
 @NgModule({
   declarations: [
@@ -30,7 +34,9 @@ import {MatInputModule} from "@angular/material/input";
     NavComponent,
     StudentTableComponent,
     ContentComponent,
-    AddStudentDialogComponent
+    AddStudentDialogComponent,
+    NavMenuComponent,
+    TooltipDirective
   ],
   imports: [
     BrowserModule,
@@ -50,6 +56,7 @@ import {MatInputModule} from "@angular/material/input";
     ReactiveFormsModule,
     MatDatepickerModule, MatNativeDateModule,
     MatSelectModule,
+    MatDividerModule,
     FormsModule
 
   ],

@@ -3,6 +3,8 @@ import {MatDialog} from "@angular/material/dialog";
 import {AddStudentDialogComponent} from "./add-student-dialog/add-student-dialog.component";
 import {StudentTableComponent} from "./student-table/student-table.component";
 import {Student} from "./student-table/student-table-datasource";
+import {ContentRendererService} from "../../shared/services/content-renderer.service";
+import {COURSES_CONTENT, LECTURES_CONTENT, STUDENT_CONTENT} from "../../shared/constants/constants";
 
 @Component({
   selector: 'app-content',
@@ -12,9 +14,17 @@ import {Student} from "./student-table/student-table-datasource";
 export class ContentComponent implements OnInit {
 
   @ViewChild(StudentTableComponent) studentTable!: StudentTableComponent;
-  private nextId!: number;
+  private nextId!: number
+  public studentContent: boolean = true;
+  public coursesContent: boolean = false;
+  public lecturesContent: boolean = false;
 
-  constructor(private addStudentDialog: MatDialog) {
+  constructor(private addStudentDialog: MatDialog, private contentRendererService: ContentRendererService) {
+    this.contentRendererService.content.subscribe(response => {
+      console.log('recibi el valor: ' + response);
+      this.resetContent();
+      this.setContentActive(response);
+    })
   }
 
   ngOnInit(): void {
@@ -43,6 +53,30 @@ export class ContentComponent implements OnInit {
   }
 
   private getNextId(): number {
-    return this.studentTable.dataSource.data.length + 2;
+    return this.studentTable.dataSource.data.length + 1;
+  }
+
+  private setContentActive(selectedContent: number): void {
+    if(selectedContent == STUDENT_CONTENT){
+      console.log('student option clicked');
+      this.studentContent = true;
+    }
+    else if(selectedContent == COURSES_CONTENT){
+      console.log('courses option clicked');
+      this.coursesContent = true;
+    }
+    else if (selectedContent == LECTURES_CONTENT){
+      console.log('lectures option clicked');
+      this.lecturesContent = true;
+    }
+    else{
+      this.studentContent = true;
+    }
+  }
+
+  private resetContent(): void {
+    this.studentContent = false;
+    this.coursesContent = false;
+    this.lecturesContent = false;
   }
 }

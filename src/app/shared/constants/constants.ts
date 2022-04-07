@@ -15,3 +15,8 @@ export const ADDRESSES = [
   {value: "caracas", country: "Venezuela", viewValue:"Caracas, Venezuela"},
   {value: "valencia", country: "Venezuela", viewValue:"Valencia, Venezuela"}
 ]
+
+export const STUDENT_CONTENT = 1;
+export const COURSES_CONTENT = 2;
+export const LECTURES_CONTENT = 3;
+

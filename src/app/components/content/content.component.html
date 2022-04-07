@@ -1,12 +1,41 @@
 <div class="container">
-  <div class="row align-items-center justify-content-end options">
-    <div class="col-4">
-      <button class="add-student-button" mat-raised-button (click)="onAddStudent()"><mat-icon aria-label="Side nav toggle icon">person_add</mat-icon> Add Student</button>
+  <!-- Student Content -->
+  <div class="container-fluid" *ngIf="studentContent">
+    <div  class="row align-items-center justify-content-end options">
+      <div class="col-4">
+        <button class="add-student-button" mat-raised-button (click)="onAddStudent()"><mat-icon aria-label="Side nav toggle icon">person_add</mat-icon> Add Student</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <app-student-table></app-student-table>
+      </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col">
-      <app-student-table></app-student-table>
+  <!-- Courses Content -->
+  <div class="container-fluid" *ngIf="coursesContent">
+    <div  class="row align-items-center justify-content-end options">
+      <div class="col-4">
+        <button class="add-student-button" mat-raised-button (click)="onAddStudent()"><mat-icon aria-label="Side nav toggle icon">person_add</mat-icon> Add Student</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <app-student-table></app-student-table>
+      </div>
+    </div>
+  </div>
+  <!-- Lectures Content -->
+  <div class="container-fluid" *ngIf="lecturesContent">
+    <div  class="row align-items-center justify-content-end options">
+      <div class="col-4">
+        <button class="add-student-button" mat-raised-button (click)="onAddStudent()"><mat-icon aria-label="Side nav toggle icon">person_add</mat-icon> Add Student</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <app-student-table></app-student-table>
+      </div>
     </div>
   </div>
 </div>

@@ -26,6 +26,8 @@ import {MatInputModule} from "@angular/material/input";
 import {MatDividerModule} from '@angular/material/divider';
 import { NavMenuComponent } from './components/nav/nav-menu/nav-menu.component';
 import { TooltipDirective } from './shared/directives/tooltip.directive';
+import { StudentDetailDialogComponent } from './components/content/student-detail-dialog/student-detail-dialog.component';
+import {MatCardModule} from "@angular/material/card";
 
 
 @NgModule({
@@ -36,30 +38,31 @@ import { TooltipDirective } from './shared/directives/tooltip.directive';
     ContentComponent,
     AddStudentDialogComponent,
     NavMenuComponent,
-    TooltipDirective
+    TooltipDirective,
+    StudentDetailDialogComponent
   ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    MatSidenavModule,
-    MatListModule,
-    LayoutModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatIconModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatDialogModule,
-    MatFormFieldModule,
-    MatInputModule,
-    ReactiveFormsModule,
-    MatDatepickerModule, MatNativeDateModule,
-    MatSelectModule,
-    MatDividerModule,
-    FormsModule
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        MatSidenavModule,
+        MatListModule,
+        LayoutModule,
+        MatToolbarModule,
+        MatButtonModule,
+        MatIconModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatDialogModule,
+        MatFormFieldModule,
+        MatInputModule,
+        ReactiveFormsModule,
+        MatDatepickerModule, MatNativeDateModule,
+        MatSelectModule,
+        MatDividerModule,
+        FormsModule, MatCardModule
 
-  ],
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

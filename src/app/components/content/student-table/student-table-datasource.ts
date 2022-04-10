@@ -3,6 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { map } from 'rxjs/operators';
 import { Observable, of as observableOf, merge } from 'rxjs';
+import {StudentService} from "../../../shared/services/student.service";
 
 // TODO: Replace this with your own data model type
 export interface Student {
@@ -19,7 +20,7 @@ export interface Student {
 }
 
 // TODO: replace this with real data from your application
-const EXAMPLE_DATA: Student[] = [
+export const STUDENT_DATA: Student[] = [
   {id:1,firstName:"Gaven",lastName:"Weiss",email:"gweiss0@nsw.gov.au",gender:"Male",birthday: new Date("2003-12-01T11:45:57"),address:"37528 Corry Avenue",phone:"+62 214 894 4449",average:93.3,absences:7},
   {id:2,firstName:"Marlyn",lastName:"McDirmid",email:"mmcdirmid1@privacy.gov.au",gender:"Female",birthday: new Date("2001-10-11T01:48:29"),address:"2 Hoepker Terrace",phone:"+86 755 292 3216",average:64.5,absences:6},
   {id:3,firstName:"Kelwin",lastName:"Bew",email:"kbew2@wunderground.com",gender:"Male",birthday: new Date("1981-04-22T23:13:34"),address:"81 Glendale Alley",phone:"+970 938 445 0079",average:83.1,absences:5},
@@ -278,12 +279,15 @@ const EXAMPLE_DATA: Student[] = [
  * (including sorting, pagination, and filtering).
  */
 export class StudentsDataSource extends DataSource<Student> {
-  data: Student[] = EXAMPLE_DATA;
+  data!: Student[];
   paginator: MatPaginator | undefined;
   sort: MatSort | undefined;
 
-  constructor() {
+  constructor(private studentService: StudentService) {
     super();
+    this.studentService.students.subscribe(response => {
+      this.data = response
+    })
   }
 
   /**

@@ -3,6 +3,16 @@
   min-height: 20rem;
   display: flex;
   flex-flow: column wrap;
+  text-align: center;
+}
+
+.dialog-title{
+  text-transform: capitalize;
+  font-weight: 500;
+}
+
+.dialog-buttons{
+  justify-content: right;
 }
 
 .alert{

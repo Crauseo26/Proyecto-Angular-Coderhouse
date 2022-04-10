@@ -1,0 +1,95 @@
+<div class="container-fluid">
+  <!-- title row -->
+  <div class="row">
+    <div class="row justify-content-end">
+      <button mat-icon-button mat-dialog-close class="close-button">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div class="row title-row">
+        <mat-icon class="title-icon">info</mat-icon>
+        <h1 class="title">Student Details</h1>
+    </div>
+    <mat-divider></mat-divider>
+    <br>
+  </div>
+  <!-- Personal info -->
+  <div class="row">
+    <div class="col-12">
+      <h3 class="subtitle">Personal info:</h3>
+    </div>
+  </div>
+  <!-- Row 1 -->
+  <div class="row">
+    <div class="col-2">
+      <mat-label class="label">Name:</mat-label>
+    </div>
+    <div class="col-4">
+      <mat-label>{{getFullName()}}</mat-label>
+    </div>
+    <div class="col-2">
+      <mat-label class="label">Birthday:</mat-label>
+    </div>
+    <div class="col-4">
+      <mat-label>{{data.birthday | date: "longDate"}}</mat-label>
+    </div>
+  </div>
+  <br>
+  <!-- Row 2 -->
+  <div class="row">
+    <div class="col-2">
+      <mat-label class="label">Gender:</mat-label>
+    </div>
+    <div class="col-4">
+      <mat-label>{{data.gender}}</mat-label>
+    </div>
+    <div class="col-2">
+      <mat-label class="label">Address:</mat-label>
+    </div>
+    <div class="col-4">
+      <mat-label>{{data.address}}</mat-label>
+    </div>
+  </div>
+  <br>
+  <!-- Row 3 -->
+  <div class="row">
+    <mat-divider></mat-divider>
+    <br>
+    <h3 class="subtitle">Contact: </h3>
+    <br>
+    <div class="col-2">
+      <mat-label class="label">Email:</mat-label>
+    </div>
+    <div class="col-4">
+      <mat-label>{{data.email}}</mat-label>
+    </div>
+    <div class="col-2">
+      <mat-label class="label">Phone:</mat-label>
+    </div>
+    <div class="col-4">
+      <mat-label>{{data.phone}}</mat-label>
+    </div>
+  </div>
+  <br>
+  <!-- Row 3 -->
+  <div class="row">
+    <mat-divider></mat-divider>
+    <br>
+    <h3 class="subtitle">Performance: </h3>
+    <br>
+    <div class="col-4">
+      <mat-label class="label">Calification average:</mat-label>
+    </div>
+    <div class="col-2">
+      <mat-label>{{data.average}}</mat-label>
+    </div>
+    <div class="col-4">
+      <mat-label class="label">Absences:</mat-label>
+    </div>
+    <div class="col-2">
+      <mat-label>{{data.absences}}</mat-label>
+    </div>
+  </div>
+</div>
+
+

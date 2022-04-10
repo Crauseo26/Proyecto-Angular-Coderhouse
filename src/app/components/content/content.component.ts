@@ -5,6 +5,8 @@ import {StudentTableComponent} from "./student-table/student-table.component";
 import {Student} from "./student-table/student-table-datasource";
 import {ContentRendererService} from "../../shared/services/content-renderer.service";
 import {COURSES_CONTENT, LECTURES_CONTENT, STUDENT_CONTENT} from "../../shared/constants/constants";
+import {StudentService} from "../../shared/services/student.service";
+import {StudentDetailDialogComponent} from "./student-detail-dialog/student-detail-dialog.component";
 
 @Component({
   selector: 'app-content',
@@ -19,9 +21,8 @@ export class ContentComponent implements OnInit {
   public coursesContent: boolean = false;
   public lecturesContent: boolean = false;
 
-  constructor(private addStudentDialog: MatDialog, private contentRendererService: ContentRendererService) {
+  constructor(private matDialog: MatDialog, private contentRendererService: ContentRendererService, private studentService: StudentService) {
     this.contentRendererService.content.subscribe(response => {
-      console.log('recibi el valor: ' + response);
       this.resetContent();
       this.setContentActive(response);
     })
@@ -31,7 +32,7 @@ export class ContentComponent implements OnInit {
   }
 
   public onAddStudent(): void {
-    const matDialog = this.addStudentDialog.open(AddStudentDialogComponent);
+    const matDialog = this.matDialog.open(AddStudentDialogComponent);
 
     matDialog.afterClosed().subscribe(result => {
       let newStudent: Student = {
@@ -44,10 +45,10 @@ export class ContentComponent implements OnInit {
         birthday: result.birthday,
         phone: result.phone,
         average: (Math.random() * (99 - 45 + 1)) + 45,
-        absences: result.absences
+        absences: (Math.random() * (8 - 1 + 1)) + 1,
       }
-      this.studentTable.dataSource.data.push(newStudent);
-      this.studentTable.refresh();
+
+      this.studentService.addStudent(newStudent);
     });
 
   }
@@ -58,15 +59,12 @@ export class ContentComponent implements OnInit {
 
   private setContentActive(selectedContent: number): void {
     if(selectedContent == STUDENT_CONTENT){
-      console.log('student option clicked');
       this.studentContent = true;
     }
     else if(selectedContent == COURSES_CONTENT){
-      console.log('courses option clicked');
       this.coursesContent = true;
     }
     else if (selectedContent == LECTURES_CONTENT){
-      console.log('lectures option clicked');
       this.lecturesContent = true;
     }
     else{

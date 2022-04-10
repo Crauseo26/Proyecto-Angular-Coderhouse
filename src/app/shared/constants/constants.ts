@@ -16,6 +16,15 @@ export const ADDRESSES = [
   {value: "valencia", country: "Venezuela", viewValue:"Valencia, Venezuela"}
 ]
 
+export const GENDERS = [
+  'Male',
+  'Female',
+  'Non-binary',
+  'Genderqueer',
+  'Genderfluid',
+  'Polygender'
+]
+
 export const STUDENT_CONTENT = 1;
 export const COURSES_CONTENT = 2;
 export const LECTURES_CONTENT = 3;

@@ -1,17 +1,19 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import {AfterViewInit, Component, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import {StudentsDataSource, Student} from './student-table-datasource';
 import {EXCELLENT_STUDENT_THRESHOLD, FAILED_STUDENT_THRESHOLD} from "../../../shared/constants/constants";
-
+import {StudentService} from "../../../shared/services/student.service";
+import {MatDialog} from "@angular/material/dialog";
+import {StudentDetailDialogComponent} from "../student-detail-dialog/student-detail-dialog.component";
 
 @Component({
   selector: 'app-student-table',
   templateUrl: './student-table.component.html',
   styleUrls: ['./student-table.component.css']
 })
-export class StudentTableComponent implements AfterViewInit {
+export class StudentTableComponent implements OnChanges, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<Student>;
@@ -24,11 +26,17 @@ export class StudentTableComponent implements AfterViewInit {
   public displayedColumns = ['average', 'fullName', 'actions'];
 
 
-  constructor() {
-    this.dataSource = new StudentsDataSource();
+  constructor(private matDialog: MatDialog, private studentService: StudentService) {
+    this.dataSource = new StudentsDataSource(this.studentService);
   }
+  public ngOnChanges(changes: SimpleChanges): void{
 
-  ngAfterViewInit(): void {
+    this.studentService.studentsChange.subscribe(response =>{
+      this.dataSource.data = response;
+      this.refresh();
+    })
+  }
+  public ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
     this.table.dataSource = this.dataSource;
@@ -36,11 +44,9 @@ export class StudentTableComponent implements AfterViewInit {
     this.excellentStudents = this.getExcellentStudents();
     this.failedStudents = this.getFailedStudents();
   }
-
   public refresh(): void {
     this.table.renderRows();
   }
-
   public getExcellentStudents(): Student[]{
     return this.students.filter( student => student.average > EXCELLENT_STUDENT_THRESHOLD);
   }
@@ -65,5 +71,21 @@ export class StudentTableComponent implements AfterViewInit {
     }else{
       return '';
     }
+  }
+
+  public onStudentDetail(studentId: number) {
+
+    const student = this.dataSource.data.find( s => s.id === studentId);
+
+    let matDialog = this.matDialog.open(StudentDetailDialogComponent, {
+      width: '38rem',
+      height: '32rem',
+      data: student
+    });
+
+
+
+
+
   }
 }

@@ -1,0 +1,22 @@
+.label{
+  font-weight: 500;
+}
+
+.subtitle{
+  font-weight: 600;
+}
+
+.title{
+  font-weight: 600;
+  text-align: center;
+}
+
+.title-row{
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: stretch;
+}
+
+.title-icon{
+  text-align: right;
+}

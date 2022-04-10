@@ -1,40 +1,41 @@
 <div class="dialog-container">
-  <h2 class="dialog-title">Add Student Form</h2>
+  <h2 class="dialog-title">new student form</h2>
     <form [formGroup]="newStudentFormGroup">
       <mat-dialog-content>
+      <!-- First and Last name inputs -->
+      <div class="row">
+        <div class="col-6">
+          <mat-form-field>
+            <mat-label>First Name</mat-label>
+            <input matInput type="text" formControlName="firstName" required minlength="3">
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <mat-label>Last Name</mat-label>
+            <input matInput type="text" formControlName="lastName" required minlength="3">
+          </mat-form-field>
+        </div>
+      </div>
+       <!-- gender select input -->
       <div class="row">
         <mat-form-field>
-          <mat-label>Full Name</mat-label>
-          <input matInput type="text" formControlName="fullName" required minlength="5">
-        </mat-form-field>
-        <div *ngIf="fullNameInput.invalid && (fullNameInput.dirty || fullNameInput.touched)"
-             class="alert">
-
-          <div *ngIf="fullNameInput.errors?.['required']">
-            Student Full Name is required.
-          </div>
-          <div *ngIf="fullNameInput.errors?.['minlength']">
-            Make sure that you have entered the first and last name.
-          </div>
-      </div>
-      </div>
-      <div class="row">
-        <mat-form-field>
-          <mat-label>Address</mat-label>
-          <mat-label>Favorite food</mat-label>
-          <mat-select formControlName="address" (selectionChange)="onSelectedAddress()" required>
-            <mat-option *ngFor="let address of addresses" [value]="address">
-              {{address.viewValue}}
+          <mat-label>Gender</mat-label>
+          <mat-select formControlName="gender" required>
+            <mat-option *ngFor="let gender of genders" [value]="gender">
+              {{gender}}
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <div *ngIf="addressInput.invalid && (addressInput.dirty || addressInput.touched)"
-             class="alert">
-          <div *ngIf="addressInput.errors?.['required']">
-            The address is required.
-          </div>
-        </div>
       </div>
+       <!-- email input -->
+        <div class="row">
+          <mat-form-field>
+            <mat-label>Email</mat-label>
+            <input matInput type="text" formControlName="email"required>
+          </mat-form-field>
+        </div>
+        <!-- birthday datepicker input -->
       <div class="row">
         <mat-form-field appearance="fill">
           <mat-label>Birthday</mat-label>
@@ -42,31 +43,23 @@
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
-        <div *ngIf="birthdayInput.invalid && (birthdayInput.dirty || birthdayInput.touched)"
-             class="alert">
-          <div *ngIf="birthdayInput.errors?.['required']">
-            The birthday is required.
-          </div>
-        </div>
-
       </div>
+        <!-- phone input -->
       <div class="row">
         <mat-form-field>
           <mat-label>Phone</mat-label>
           <input matInput type="text" formControlName="phone" required minlength="11">
         </mat-form-field>
-        <div *ngIf="phoneInput.invalid && (phoneInput.dirty || phoneInput.touched)"
-             class="alert">
-          <div *ngIf="phoneInput.errors?.['required']">
-            The phone is required.
-          </div>
-          <div *ngIf="phoneInput.errors?.['minlength']">
-            The phone number is incomplete
-          </div>
-        </div>
       </div>
+        <!-- address input -->
+        <div class="row">
+          <mat-form-field>
+            <mat-label>Address</mat-label>
+            <input matInput type="text" formControlName="address" required>
+          </mat-form-field>
+        </div>
       </mat-dialog-content>
-      <mat-dialog-actions>
+      <mat-dialog-actions class="dialog-buttons">
         <button mat-button (click)="onBack()">Back</button>
         <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!newStudentFormGroup.valid">Add</button>
       </mat-dialog-actions>

@@ -7,6 +7,7 @@ import {EXCELLENT_STUDENT_THRESHOLD, FAILED_STUDENT_THRESHOLD} from "../../../sh
 import {StudentService} from "../../../shared/services/student.service";
 import {MatDialog} from "@angular/material/dialog";
 import {StudentDetailDialogComponent} from "../student-detail-dialog/student-detail-dialog.component";
+import {StudentEditDialogComponent} from "../student-edit-dialog/student-edit-dialog.component";
 
 @Component({
   selector: 'app-student-table',
@@ -77,31 +78,70 @@ export class StudentTableComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   public onStudentDetail(studentId: number) {
-
     const student = this.dataSource.data.find( s => s.id === studentId);
-
     let matDialog = this.matDialog.open(StudentDetailDialogComponent, {
       width: '38rem',
       height: '32rem',
       data: student
     });
-
-
-
-
-
   }
 
   public filterTable(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
   }
 
   public addStudent(student: Student): void{
     this.dataSource.data.push(student);
+  }
+
+  public onEditStudent(studentId: number): void {
+    const student = this.dataSource.data.find(s => s.id === studentId);
+
+    if(student){
+      let matDialog = this.matDialog.open(StudentEditDialogComponent, {
+        width: '38rem',
+        height: '32rem',
+        data: student
+      })
+
+      matDialog.afterClosed().subscribe(result => {
+
+        let updatedStudent: Student = {
+          absences: student.absences,
+          average: student.average,
+          address: result.address,
+          birthday: result.birthday,
+          email: result.email,
+          firstName: result.firstName,
+          gender: result.gender,
+          lastName: result.lastName,
+          phone: result.phone,
+          id: studentId
+        }
+
+        this.updateStudent(updatedStudent);
+      });
+    }
+  }
+
+  private updateStudent(updatedStudent: Student) {
+    const updatedDatasource = this.dataSource.data.map( s => s.id == updatedStudent.id
+        ? {...s,
+        firstName: updatedStudent.firstName,
+        lastName: updatedStudent.lastName,
+        email: updatedStudent.email,
+        address: updatedStudent.address,
+        phone: updatedStudent.phone,
+        gender: updatedStudent.gender,
+        }
+        : s
+      );
+    this.dataSource.data = updatedDatasource;
+  }
+
+  public onDeleteStudent(studentId: number): void {
+    const updatedDatasource = this.dataSource.data.filter(s => s.id !== studentId);
+    this.dataSource.data = updatedDatasource;
   }
 }

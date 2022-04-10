@@ -44,8 +44,8 @@ export class ContentComponent implements OnInit {
         address: result.address,
         birthday: result.birthday,
         phone: result.phone,
-        average: (Math.random() * (99 - 45 + 1)) + 45,
-        absences: (Math.random() * (8 - 1 + 1)) + 1,
+        average: Math.floor((Math.random() * (99 - 45 + 1)) + 45),
+        absences: Math.floor((Math.random() * (8 - 1 + 1)) + 1),
       }
       this.studentTable.addStudent(newStudent);
     });

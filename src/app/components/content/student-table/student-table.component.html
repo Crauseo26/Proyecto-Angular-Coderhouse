@@ -29,10 +29,10 @@
         <button mat-icon-button (click)="onStudentDetail(row.id)">
           <mat-icon>info</mat-icon>
         </button>
-        <button mat-icon-button>
+        <button mat-icon-button (click)="onEditStudent(row.id)">
           <mat-icon>edit</mat-icon>
         </button>
-        <button mat-icon-button>
+        <button mat-icon-button (click)="onDeleteStudent(row.id)">
           <mat-icon>delete</mat-icon>
         </button>
       </td>

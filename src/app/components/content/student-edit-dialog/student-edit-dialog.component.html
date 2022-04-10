@@ -1,0 +1,69 @@
+<div class="dialog-container">
+  <h2 class="dialog-title">student edit form</h2>
+  <form [formGroup]="editStudentFormGroup">
+    <mat-dialog-content>
+      <!-- First and Last name inputs -->
+      <div class="row">
+        <div class="col-6">
+          <mat-form-field>
+            <mat-label>First Name</mat-label>
+            <input matInput type="text" formControlName="firstName" required minlength="3">
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <mat-label>Last Name</mat-label>
+            <input matInput type="text" formControlName="lastName" required minlength="3">
+          </mat-form-field>
+        </div>
+      </div>
+      <!-- gender select input -->
+      <div class="row">
+        <mat-form-field>
+          <mat-label>Gender</mat-label>
+          <mat-select formControlName="gender"  required>
+            <mat-option *ngFor="let gender of genders" [value]="gender">
+              {{gender}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <!-- email input -->
+      <div class="row">
+        <mat-form-field>
+          <mat-label>Email</mat-label>
+          <input matInput type="text" formControlName="email"required>
+        </mat-form-field>
+      </div>
+      <!-- birthday datepicker input -->
+      <div class="row">
+        <mat-form-field appearance="fill">
+          <mat-label>Birthday</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="birthday" required>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <!-- phone input -->
+      <div class="row">
+        <mat-form-field>
+          <mat-label>Phone</mat-label>
+          <input matInput type="text" formControlName="phone" required minlength="11">
+        </mat-form-field>
+      </div>
+      <!-- address input -->
+      <div class="row">
+        <mat-form-field>
+          <mat-label>Address</mat-label>
+          <input matInput type="text" formControlName="address" required>
+        </mat-form-field>
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions class="dialog-buttons">
+      <button mat-button (click)="onBack()">Back</button>
+      <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!editStudentFormGroup.valid">Add</button>
+    </mat-dialog-actions>
+  </form>
+</div>
+
+

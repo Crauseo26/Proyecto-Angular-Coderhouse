@@ -9,3 +9,14 @@
 .failed-student{
   background-color: rgba(246, 114, 140, 0.45);
 }
+
+.search-bar{
+  padding: 0.7rem;
+  justify-content: center;
+}
+
+.search-bar-label{
+  font-weight: 600;
+  text-transform: uppercase;
+  font-style: italic;
+}

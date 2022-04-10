@@ -1,8 +1,8 @@
-import {AfterViewInit, Component, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTable } from '@angular/material/table';
-import {StudentsDataSource, Student} from './student-table-datasource';
+import {AfterViewInit, Component, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
+import {MatTable, MatTableDataSource} from '@angular/material/table';
+import {StudentsDataSource, Student, STUDENT_DATA} from './student-table-datasource';
 import {EXCELLENT_STUDENT_THRESHOLD, FAILED_STUDENT_THRESHOLD} from "../../../shared/constants/constants";
 import {StudentService} from "../../../shared/services/student.service";
 import {MatDialog} from "@angular/material/dialog";
@@ -13,12 +13,10 @@ import {StudentDetailDialogComponent} from "../student-detail-dialog/student-det
   templateUrl: './student-table.component.html',
   styleUrls: ['./student-table.component.css']
 })
-export class StudentTableComponent implements OnChanges, AfterViewInit {
+export class StudentTableComponent implements OnInit, OnChanges, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatTable) table!: MatTable<Student>;
-  dataSource: StudentsDataSource;
-  private students!: Student[];
+  dataSource: MatTableDataSource<Student>;
   private excellentStudents!: Student[];
   private failedStudents!: Student[];
 
@@ -27,39 +25,44 @@ export class StudentTableComponent implements OnChanges, AfterViewInit {
 
 
   constructor(private matDialog: MatDialog, private studentService: StudentService) {
-    this.dataSource = new StudentsDataSource(this.studentService);
+    this.dataSource = new MatTableDataSource<Student>(STUDENT_DATA);
   }
-  public ngOnChanges(changes: SimpleChanges): void{
 
-    this.studentService.studentsChange.subscribe(response =>{
-      this.dataSource.data = response;
-      this.refresh();
-    })
+  public ngOnChanges(changes: SimpleChanges): void {
+    console.log('onChanges called');
+    }
+
+  public ngOnInit(): void {
+    this.excellentStudents = this.getExcellentStudents();
+    this.failedStudents = this.getFailedStudents();
+
+    this.dataSource.filterPredicate = function (data, filter) {
+      return data.firstName.indexOf(filter) !== -1 || data.lastName.indexOf(filter) !== -1
+    }
   }
+
   public ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
-    this.table.dataSource = this.dataSource;
-    this.students = this.dataSource.data;
-    this.excellentStudents = this.getExcellentStudents();
-    this.failedStudents = this.getFailedStudents();
+
   }
   public refresh(): void {
-    this.table.renderRows();
   }
+
   public getExcellentStudents(): Student[]{
-    return this.students.filter( student => student.average > EXCELLENT_STUDENT_THRESHOLD);
+    return this.dataSource.data?.filter( student => student.average > EXCELLENT_STUDENT_THRESHOLD);
   }
 
   public getFailedStudents(): Student[]{
-    return this.students.filter( student => student.average < FAILED_STUDENT_THRESHOLD);
+    return this.dataSource.data?.filter( student => student.average < FAILED_STUDENT_THRESHOLD);
   }
 
   public isExcellentStudent(value: Student): boolean{
-    return this.excellentStudents.includes(value);
+    return this.excellentStudents?.includes(value);
   }
+
   public isFailedStudent(value: Student): boolean{
-    return this.failedStudents.includes(value);
+    return this.failedStudents?.includes(value);
   }
 
   public setStyleByCalification(student: Student): string{
@@ -87,5 +90,18 @@ export class StudentTableComponent implements OnChanges, AfterViewInit {
 
 
 
+  }
+
+  public filterTable(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
+  public addStudent(student: Student): void{
+    this.dataSource.data.push(student);
   }
 }

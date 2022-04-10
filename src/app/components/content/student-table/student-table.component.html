@@ -1,6 +1,11 @@
 <div class="mat-elevation-z8">
-  <table mat-table class="full-width-table" matSort matSortActive="average" matSortDirection="desc" aria-label="Elements">
-
+  <div class="row search-bar">
+    <mat-form-field appearance="standard">
+      <mat-label class="search-bar-label">Search</mat-label>
+      <input matInput (keyup)="filterTable($event)" placeholder="student name" #input>
+    </mat-form-field>
+  </div>
+  <table mat-table [dataSource]="dataSource" class="full-width-table" matSort matSortActive="average" matSortDirection="desc" aria-label="Elements">
     <!-- Name Column -->
     <ng-container matColumnDef="fullName">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Full Name</th>
@@ -35,6 +40,10 @@
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="setStyleByCalification(row)"></tr>
+
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+    </tr>
   </table>
 
   <mat-paginator #paginator

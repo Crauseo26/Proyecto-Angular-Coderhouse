@@ -17,8 +17,9 @@ mat-sidenav-content{
 }
 
 .toolbar-title{
-  font-weight: 500;
+  font-weight: 600;
   text-transform: uppercase;
+  font-style: italic;
   margin-left: 3rem;
 }
 

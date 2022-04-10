@@ -22,12 +22,11 @@ export class StudentService {
 
   public students = new BehaviorSubject<Student[]>(STUDENT_DATA);
   public studentsChange = this.students.asObservable();
-  public selectedStudent = new BehaviorSubject<Student>(this.student);
-  public selectedStudentChange: Observable<Student> =this.selectedStudent.asObservable();
 
   constructor() { }
 
   public addStudent(input: Student): void{
+    console.log('addStudent called');
     let Students = this.getStudents();
     Students.push(input);
     this.students.next(Students);

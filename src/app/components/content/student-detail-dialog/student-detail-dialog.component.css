@@ -1,14 +1,18 @@
 .label{
   font-weight: 500;
+  font-style: italic;
 }
 
 .subtitle{
   font-weight: 600;
+  font-style: italic;
 }
 
 .title{
   font-weight: 600;
+  font-style: italic;
   text-align: center;
+  padding: 0.5rem;
 }
 
 .title-row{

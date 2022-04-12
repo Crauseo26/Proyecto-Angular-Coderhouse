@@ -29,6 +29,8 @@ import { TooltipDirective } from './shared/directives/tooltip.directive';
 import { StudentDetailDialogComponent } from './components/content/student-detail-dialog/student-detail-dialog.component';
 import {MatCardModule} from "@angular/material/card";
 import {StudentEditDialogComponent} from "./components/content/student-edit-dialog/student-edit-dialog.component";
+import { StudentNamesPipe } from './shared/pipes/student-names.pipe';
+import { StudentRecognitionDirective } from './shared/directives/student-recognition.directive';
 
 
 @NgModule({
@@ -41,7 +43,9 @@ import {StudentEditDialogComponent} from "./components/content/student-edit-dial
     NavMenuComponent,
     TooltipDirective,
     StudentDetailDialogComponent,
-    StudentEditDialogComponent
+    StudentEditDialogComponent,
+    StudentNamesPipe,
+    StudentRecognitionDirective
   ],
     imports: [
         BrowserModule,

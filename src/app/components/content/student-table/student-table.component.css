@@ -3,6 +3,8 @@
 }
 
 .excellent-student {
+  font-weight: 500;
+  font-style: italic;
   background-color: rgba(133, 211, 169, 0.45);
 }
 

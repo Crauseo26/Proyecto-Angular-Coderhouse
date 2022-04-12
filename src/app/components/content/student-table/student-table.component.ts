@@ -47,11 +47,21 @@ export class StudentTableComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   public getExcellentStudents(): Student[]{
-    return this.dataSource.data?.filter( student => student.average > EXCELLENT_STUDENT_THRESHOLD);
+    let filteredStudentList = this.dataSource.data?.filter( student => student.average > EXCELLENT_STUDENT_THRESHOLD).sort(
+      function desc(a, b) {
+        return b.average - a.average;
+      }
+    );
+    return filteredStudentList.slice(0,10);
   }
 
   public getFailedStudents(): Student[]{
-    return this.dataSource.data?.filter( student => student.average < FAILED_STUDENT_THRESHOLD);
+    let filteredStudentList = this.dataSource.data?.filter( student => student.average < FAILED_STUDENT_THRESHOLD).sort(
+      function asc(a, b) {
+        return a.average - b.average;
+      }
+    );
+    return filteredStudentList.slice(0,10);
   }
 
   public isExcellentStudent(value: Student): boolean{

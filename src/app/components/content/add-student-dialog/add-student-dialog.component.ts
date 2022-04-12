@@ -14,13 +14,13 @@ class DialogData {
 export class AddStudentDialogComponent{
 
   public newStudentFormGroup = new FormGroup({
-    firstName: new FormControl(''),
-    lastName: new FormControl(''),
-    email: new FormControl('', Validators.email),
-    gender: new FormControl(''),
-    address: new FormControl(''),
-    birthday: new FormControl(''),
-    phone: new FormControl('')
+    firstName: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    lastName: new FormControl('',[Validators.required, Validators.minLength(3)]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    gender: new FormControl('', Validators.required),
+    address: new FormControl('',[Validators.required, Validators.minLength(11)]),
+    birthday: new FormControl('', Validators.required),
+    phone: new FormControl('', [Validators.required, Validators.minLength(9)])
   });
 
   public genders = GENDERS;
@@ -36,4 +36,15 @@ export class AddStudentDialogComponent{
     this.dialogRef.close(this.newStudentFormGroup.value);
   }
 
+  public validateMinLength(requiredControl: string): boolean {
+    return this.newStudentFormGroup.controls[requiredControl].hasError('minlength') && !this.newStudentFormGroup.controls[requiredControl].hasError('required');
+  }
+
+  public validateRequired(requiredControl: string): boolean {
+    return this.newStudentFormGroup.controls[requiredControl].hasError('required');
+  }
+
+  public validateEmail(): boolean {
+    return this.newStudentFormGroup.controls['email'].hasError('email') && !this.newStudentFormGroup.controls['email'].hasError('required');
+  }
 }

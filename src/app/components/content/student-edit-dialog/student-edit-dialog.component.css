@@ -19,3 +19,7 @@
   color: #f44336;
   text-align: left;
 }
+
+.mat-form-field{
+  width: 100%;
+}

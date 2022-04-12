@@ -7,13 +7,25 @@
         <div class="col-6">
           <mat-form-field>
             <mat-label>First Name</mat-label>
-            <input matInput type="text" formControlName="firstName" required minlength="3">
+            <input matInput type="text" formControlName="firstName">
+            <mat-error *ngIf="validateMinLength('firstName')">
+              the minimum size allowed is 3 characters
+            </mat-error>
+            <mat-error *ngIf="validateRequired('firstName')">
+              Don't forget to fill this field cus is <strong>required</strong>
+            </mat-error>
           </mat-form-field>
         </div>
         <div class="col-6">
           <mat-form-field>
             <mat-label>Last Name</mat-label>
-            <input matInput type="text" formControlName="lastName" required minlength="3">
+            <input matInput type="text" formControlName="lastName">
+            <mat-error *ngIf="validateMinLength('lastName')">
+              the minimum size allowed is 3 characters
+            </mat-error>
+            <mat-error *ngIf="validateRequired('lastName')">
+              Don't forget to fill this field cus is <strong>required</strong>
+            </mat-error>
           </mat-form-field>
         </div>
       </div>
@@ -26,6 +38,9 @@
               {{gender}}
             </mat-option>
           </mat-select>
+          <mat-error *ngIf="validateRequired('gender')">
+            Don't forget to fill this field cus is <strong>required</strong>
+          </mat-error>
         </mat-form-field>
       </div>
        <!-- email input -->
@@ -33,29 +48,50 @@
           <mat-form-field>
             <mat-label>Email</mat-label>
             <input matInput type="text" formControlName="email"required>
+            <mat-error *ngIf="validateEmail()">
+              Doesn't look like a valid email address
+            </mat-error>
+            <mat-error *ngIf="validateRequired('email')">
+              Don't forget to fill this field cus is <strong>required</strong>
+            </mat-error>
           </mat-form-field>
         </div>
         <!-- birthday datepicker input -->
       <div class="row">
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="standard">
           <mat-label>Birthday</mat-label>
           <input matInput [matDatepicker]="picker" formControlName="birthday" required>
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="validateRequired('birthday')">
+            Don't forget to fill this field cus is <strong>required</strong>
+          </mat-error>
         </mat-form-field>
       </div>
         <!-- phone input -->
       <div class="row">
         <mat-form-field>
           <mat-label>Phone</mat-label>
-          <input matInput type="text" formControlName="phone" required minlength="11">
+          <input matInput type="text" formControlName="phone">
+          <mat-error *ngIf="validateMinLength('phone')">
+            The phone phone number is too short, please add country code or area code
+          </mat-error>
+          <mat-error *ngIf="validateRequired('phone')">
+            Don't forget to fill this field cus is <strong>required</strong>
+          </mat-error>
         </mat-form-field>
       </div>
         <!-- address input -->
         <div class="row">
           <mat-form-field>
             <mat-label>Address</mat-label>
-            <input matInput type="text" formControlName="address" required>
+            <input matInput type="text" formControlName="address">
+            <mat-error *ngIf="validateMinLength('address')">
+              The address is too short, please add more details
+            </mat-error>
+            <mat-error *ngIf="validateRequired('address')">
+              Don't forget to fill this field cus is <strong>required</strong>
+            </mat-error>
           </mat-form-field>
         </div>
       </mat-dialog-content>

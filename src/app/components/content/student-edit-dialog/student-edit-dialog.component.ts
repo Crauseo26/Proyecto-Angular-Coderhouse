@@ -11,13 +11,13 @@ import {Student} from "../student-table/student-table-datasource";
 })
 export class StudentEditDialogComponent implements OnInit {
   public editStudentFormGroup = new FormGroup({
-    firstName: new FormControl(this.data.firstName),
-    lastName: new FormControl(this.data.lastName),
-    email: new FormControl(this.data.email, Validators.email),
-    gender: new FormControl(this.data.gender),
-    address: new FormControl(this.data.address),
-    birthday: new FormControl(this.data.birthday),
-    phone: new FormControl(this.data.phone)
+    firstName: new FormControl(this.data.firstName, [Validators.required, Validators.minLength(3)]),
+    lastName: new FormControl(this.data.lastName,[Validators.required, Validators.minLength(3)]),
+    email: new FormControl(this.data.email, [Validators.required, Validators.email]),
+    gender: new FormControl(this.data.gender, Validators.required),
+    address: new FormControl(this.data.address,[Validators.required, Validators.minLength(11)]),
+    birthday: new FormControl(this.data.birthday, Validators.required),
+    phone: new FormControl(this.data.phone, [Validators.required, Validators.minLength(9)])
   });
   public genders = GENDERS;
   constructor(@Inject(MAT_DIALOG_DATA) public data: Student, private dialogRef: MatDialogRef<StudentEditDialogComponent>) { }
@@ -33,5 +33,18 @@ export class StudentEditDialogComponent implements OnInit {
   public onBack(): void{
     this.dialogRef.close(null);
   }
+
+  public validateMinLength(requiredControl: string): boolean {
+    return this.editStudentFormGroup.controls[requiredControl].hasError('minlength') && !this.editStudentFormGroup.controls[requiredControl].hasError('required');
+  }
+
+  public validateRequired(requiredControl: string): boolean {
+    return this.editStudentFormGroup.controls[requiredControl].hasError('required');
+  }
+
+  public validateEmail(): boolean {
+    return this.editStudentFormGroup.controls['email'].hasError('email') && !this.editStudentFormGroup.controls['email'].hasError('required');
+  }
+
 
 }

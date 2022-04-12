@@ -14,6 +14,7 @@ import {StudentEditDialogComponent} from "../student-edit-dialog/student-edit-di
   templateUrl: './student-table.component.html',
   styleUrls: ['./student-table.component.css']
 })
+
 export class StudentTableComponent implements OnInit, OnChanges, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -24,14 +25,11 @@ export class StudentTableComponent implements OnInit, OnChanges, AfterViewInit {
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   public displayedColumns = ['average', 'fullName', 'actions'];
 
-
   constructor(private matDialog: MatDialog, private studentService: StudentService) {
     this.dataSource = new MatTableDataSource<Student>(STUDENT_DATA);
   }
 
-  public ngOnChanges(changes: SimpleChanges): void {
-    console.log('onChanges called');
-    }
+  public ngOnChanges(changes: SimpleChanges): void {}
 
   public ngOnInit(): void {
     this.excellentStudents = this.getExcellentStudents();
@@ -46,8 +44,6 @@ export class StudentTableComponent implements OnInit, OnChanges, AfterViewInit {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
 
-  }
-  public refresh(): void {
   }
 
   public getExcellentStudents(): Student[]{

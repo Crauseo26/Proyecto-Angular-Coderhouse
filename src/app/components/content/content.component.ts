@@ -44,6 +44,7 @@ export class ContentComponent implements OnInit {
         address: result.address,
         birthday: result.birthday,
         phone: result.phone,
+        profilePhoto: result.profilePhoto,
         average: Math.floor((Math.random() * (99 - 45 + 1)) + 45),
         absences: Math.floor((Math.random() * (8 - 1 + 1)) + 1),
       }

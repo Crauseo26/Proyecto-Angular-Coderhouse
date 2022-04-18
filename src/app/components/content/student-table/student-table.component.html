@@ -26,13 +26,13 @@
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
       <td mat-cell *matCellDef="let row">
-        <button mat-icon-button (click)="onStudentDetail(row.id)">
+        <button mat-icon-button (click)="onStudentDetail(row)">
           <mat-icon>info</mat-icon>
         </button>
-        <button mat-icon-button (click)="onEditStudent(row.id)">
+        <button mat-icon-button (click)="onEditStudent(row)">
           <mat-icon>edit</mat-icon>
         </button>
-        <button mat-icon-button (click)="onDeleteStudent(row.id)">
+        <button mat-icon-button (click)="onDeleteStudent(row)">
           <mat-icon>delete</mat-icon>
         </button>
       </td>
@@ -42,7 +42,8 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"  studentRecognition [student]="row"></tr>
 
     <tr class="mat-row" *matNoDataRow>
-      <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+      <td *ngIf="input.value !== ''" class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+      <td *ngIf="input.value === ''" class="mat-cell" colspan="4">No student data yet...</td>
     </tr>
   </table>
 

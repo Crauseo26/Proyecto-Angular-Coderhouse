@@ -24,3 +24,13 @@
 .title-icon{
   text-align: right;
 }
+
+.profile-photo{
+}
+
+.photo{
+  max-width: 8rem;
+  max-height: 9rem;
+  border-radius: 100px;
+  border: 1px solid rgba(77, 76, 76, 0.45);
+}

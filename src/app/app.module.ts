@@ -31,6 +31,9 @@ import {MatCardModule} from "@angular/material/card";
 import {StudentEditDialogComponent} from "./components/content/student-edit-dialog/student-edit-dialog.component";
 import { StudentNamesPipe } from './shared/pipes/student-names.pipe';
 import { StudentRecognitionDirective } from './shared/directives/student-recognition.directive';
+import {HttpClientModule} from "@angular/common/http";
+import { ChangeProfilePhotoComponent } from './components/content/student-detail-dialog/change-profile-photo/change-profile-photo.component';
+import { CoursesListComponent } from './components/content/courses-list/courses-list.component';
 
 
 @NgModule({
@@ -45,7 +48,9 @@ import { StudentRecognitionDirective } from './shared/directives/student-recogni
     StudentDetailDialogComponent,
     StudentEditDialogComponent,
     StudentNamesPipe,
-    StudentRecognitionDirective
+    StudentRecognitionDirective,
+    ChangeProfilePhotoComponent,
+    CoursesListComponent
   ],
     imports: [
         BrowserModule,
@@ -66,7 +71,8 @@ import { StudentRecognitionDirective } from './shared/directives/student-recogni
         MatDatepickerModule, MatNativeDateModule,
         MatSelectModule,
         MatDividerModule,
-        FormsModule, MatCardModule
+        FormsModule, MatCardModule,
+        HttpClientModule,
 
     ],
   providers: [],

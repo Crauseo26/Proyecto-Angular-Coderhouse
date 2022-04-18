@@ -1,8 +1,8 @@
-import {AfterViewInit, Component, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTable, MatTableDataSource} from '@angular/material/table';
-import {StudentsDataSource, Student, STUDENT_DATA} from './student-table-datasource';
+import {StudentsDataSource, Student} from './student-table-datasource';
 import {EXCELLENT_STUDENT_THRESHOLD, FAILED_STUDENT_THRESHOLD} from "../../../shared/constants/constants";
 import {StudentService} from "../../../shared/services/student.service";
 import {MatDialog} from "@angular/material/dialog";
@@ -15,10 +15,11 @@ import {StudentEditDialogComponent} from "../student-edit-dialog/student-edit-di
   styleUrls: ['./student-table.component.css']
 })
 
-export class StudentTableComponent implements OnInit, OnChanges, AfterViewInit {
+export class StudentTableComponent implements OnInit, OnChanges {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  dataSource: MatTableDataSource<Student>;
+  private students!: Student[];
+  public dataSource!: MatTableDataSource<Student>;
   private excellentStudents!: Student[];
   private failedStudents!: Student[];
 
@@ -26,24 +27,22 @@ export class StudentTableComponent implements OnInit, OnChanges, AfterViewInit {
   public displayedColumns = ['average', 'fullName', 'actions'];
 
   constructor(private matDialog: MatDialog, private studentService: StudentService) {
-    this.dataSource = new MatTableDataSource<Student>(STUDENT_DATA);
+    studentService.get().toPromise().then(response => {
+      this.students = response;
+      this.setStudentsData();
+    });
   }
 
   public ngOnChanges(changes: SimpleChanges): void {}
 
   public ngOnInit(): void {
+
     this.excellentStudents = this.getExcellentStudents();
     this.failedStudents = this.getFailedStudents();
 
     this.dataSource.filterPredicate = function (data, filter) {
-      return data.firstName.indexOf(filter) !== -1 || data.lastName.indexOf(filter) !== -1
+      return data.firstName.indexOf(filter) !== -1 || data.lastName.indexOf(filter) !== -1;
     }
-  }
-
-  public ngAfterViewInit(): void {
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
-
   }
 
   public getExcellentStudents(): Student[]{
@@ -83,12 +82,11 @@ export class StudentTableComponent implements OnInit, OnChanges, AfterViewInit {
     }
   }
 
-  public onStudentDetail(studentId: number) {
-    const student = this.dataSource.data.find( s => s.id === studentId);
+  public onStudentDetail(selectedStudent: Student) {
     let matDialog = this.matDialog.open(StudentDetailDialogComponent, {
       width: '38rem',
-      height: '32rem',
-      data: student
+      height: '35rem',
+      data: selectedStudent
     });
   }
 
@@ -101,32 +99,33 @@ export class StudentTableComponent implements OnInit, OnChanges, AfterViewInit {
     this.dataSource.data.push(student);
   }
 
-  public onEditStudent(studentId: number): void {
-    const student = this.dataSource.data.find(s => s.id === studentId);
-
-    if(student){
+  public onEditStudent(selectedStudent: Student): void {
+    console.log(selectedStudent);
+    if(selectedStudent){
       let matDialog = this.matDialog.open(StudentEditDialogComponent, {
         width: '38rem',
         height: '32rem',
-        data: student
+        data: selectedStudent
       })
 
       matDialog.afterClosed().subscribe(result => {
 
-        let updatedStudent: Student = {
-          absences: student.absences,
-          average: student.average,
-          address: result.address,
-          birthday: result.birthday,
-          email: result.email,
-          firstName: result.firstName,
-          gender: result.gender,
-          lastName: result.lastName,
-          phone: result.phone,
-          id: studentId
+        if(result){
+          let updatedStudent: Student = {
+            absences: selectedStudent.absences,
+            average: selectedStudent.average,
+            address: result.address,
+            birthday: result.birthday,
+            email: result.email,
+            firstName: result.firstName,
+            gender: result.gender,
+            lastName: result.lastName,
+            phone: result.phone,
+            profilePhoto: result.profilePhoto,
+            id: selectedStudent.id
+          }
+          this.updateStudent(updatedStudent);
         }
-
-        this.updateStudent(updatedStudent);
       });
     }
   }
@@ -146,8 +145,15 @@ export class StudentTableComponent implements OnInit, OnChanges, AfterViewInit {
     this.dataSource.data = updatedDatasource;
   }
 
-  public onDeleteStudent(studentId: number): void {
-    const updatedDatasource = this.dataSource.data.filter(s => s.id !== studentId);
+  public onDeleteStudent(selectedStudent: Student): void {
+    const updatedDatasource = this.dataSource.data.filter(s => s.id !== selectedStudent.id);
     this.dataSource.data = updatedDatasource;
+  }
+
+  private setStudentsData() {
+    this.dataSource = new MatTableDataSource<Student>(this.students);
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+
   }
 }

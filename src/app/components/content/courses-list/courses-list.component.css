@@ -1,0 +1,10 @@
+.course-card{
+  margin-top: 2rem;
+  margin-bottom: 1.5rem;
+  margin-left: 2rem;
+}
+
+.mat-card-image{
+  max-height: 12rem;
+  min-height: 12rem;
+}

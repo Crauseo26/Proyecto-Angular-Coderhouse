@@ -1,5 +1,4 @@
-import {Component, OnInit, Output} from '@angular/core';
-import {ContentRendererService} from "../../../shared/services/content-renderer.service";
+import {Component, OnInit} from '@angular/core';
 
 interface menuOption {
   icon: string,
@@ -14,18 +13,16 @@ interface menuOption {
 export class NavMenuComponent implements OnInit {
 
   public menuOptions: menuOption[] = [
+    {icon: 'home', label: 'Home'},
     {icon: 'school', label: 'Students'},
     {icon: 'class', label: 'Courses'},
     {icon: 'event_available', label: 'Lectures'},
+
   ]
 
-  constructor(private contentRendererService: ContentRendererService) { }
+  constructor() { }
 
   ngOnInit(): void {
-  }
-
-  public onMenuOptionSelected(selectedOption: string): void{
-    this.contentRendererService.setActiveContent(selectedOption);
   }
 
 }

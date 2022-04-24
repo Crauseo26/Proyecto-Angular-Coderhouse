@@ -21,7 +21,7 @@ export class AddStudentDialogComponent{
     address: new FormControl('',[Validators.required, Validators.minLength(11)]),
     birthday: new FormControl('', Validators.required),
     phone: new FormControl('', [Validators.required, Validators.minLength(9)]),
-    profilePhotouRL: new FormControl('', Validators.required)
+    profilePhotoURL: new FormControl('', Validators.required)
   });
 
   public genders = GENDERS;

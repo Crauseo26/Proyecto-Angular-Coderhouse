@@ -1,12 +1,24 @@
 import { NgModule } from '@angular/core';
 import {RouterModule, Routes} from "@angular/router";
-import {StudentTableComponent} from "./components/content/student-table/student-table.component";
-import {CoursesListComponent} from "./components/content/courses-list/courses-list.component";
 
 const routes: Routes = [
-  { path: 'students', component: StudentTableComponent},
-  {path: 'courses', component: CoursesListComponent},
-  {path: '**', component:StudentTableComponent}
+  {
+    path: '',
+    loadChildren: () => import('./features/home/home.module').then((m) => m.HomeModule),
+  },
+  {
+    path: 'Home',
+    loadChildren: () => import('./features/home/home.module').then((m) => m.HomeModule),
+  },
+  {
+    path: "Students",
+    loadChildren: () => import('./features/students/students.module').then((m) => m.StudentsModule),
+  },
+  {
+    path: "Courses",
+    loadChildren: () => import('./features/courses/courses.module').then((m) => m.CoursesModule),
+  },
+
 ];
 
 

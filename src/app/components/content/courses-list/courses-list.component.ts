@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CoursesService} from "../../../shared/services/courses.service";
 import {Course} from "../../../shared/models/courses.model";
 import {Observable} from "rxjs";
@@ -18,20 +18,9 @@ export class CoursesListComponent implements OnInit {
     this.courses = courseService.get();
     courseService.getCorusePhoto().subscribe(response => {
      this.imgUrl = response.results;
-      console.log(this.imgUrl);
     });
   }
 
-  ngOnInit(): void {
-  //   this.courseService.get().subscribe(
-  // response => {
-  //     if(response){
-  //       this.courses = response
-  //     }
-  //   },
-  //   error => {
-  //     this.serviceError = `Sorry. Can't get the Courses info, please try again.`
-  //   });
-  }
+  ngOnInit(): void {  }
 
 }

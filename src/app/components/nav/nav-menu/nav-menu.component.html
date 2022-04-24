@@ -1,5 +1,5 @@
 <div class="menu-options" [appTooltip]="option.label" *ngFor="let option of menuOptions">
-  <a mat-list-item (click)="onMenuOptionSelected(option.label)">
+  <a mat-list-item routerLink="{{option.label.toLowerCase()}}">
     <mat-icon>{{option.icon}}</mat-icon>
   </a>
   <mat-divider></mat-divider>

@@ -34,6 +34,7 @@ import { StudentRecognitionDirective } from './shared/directives/student-recogni
 import {HttpClientModule} from "@angular/common/http";
 import { ChangeProfilePhotoComponent } from './components/content/student-detail-dialog/change-profile-photo/change-profile-photo.component';
 import { CoursesListComponent } from './components/content/courses-list/courses-list.component';
+import { AppRoutingModule } from './app-routing.module';
 
 
 @NgModule({
@@ -73,6 +74,7 @@ import { CoursesListComponent } from './components/content/courses-list/courses-
         MatDividerModule,
         FormsModule, MatCardModule,
         HttpClientModule,
+        AppRoutingModule,
 
     ],
   providers: [],

@@ -1,4 +1,4 @@
-import {Component, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTable, MatTableDataSource} from '@angular/material/table';
@@ -10,6 +10,8 @@ import {StudentDetailDialogComponent} from "../student-detail-dialog/student-det
 import {StudentEditDialogComponent} from "../student-edit-dialog/student-edit-dialog.component";
 import {AddStudentDialogComponent} from "../add-student-dialog/add-student-dialog.component";
 import {Subscription} from "rxjs";
+import {ActivatedRoute, Router} from "@angular/router";
+import {DeleteWarningDialogComponent} from "../../../shared/delete-warning-dialog/delete-warning-dialog.component";
 
 @Component({
   selector: 'app-student-table',
@@ -29,7 +31,7 @@ export class StudentTableComponent implements OnInit, OnChanges, OnDestroy {
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   public displayedColumns = ['average', 'fullName', 'actions'];
 
-  constructor(private matDialog: MatDialog, private studentService: StudentService) {
+  constructor(private route: ActivatedRoute, private router: Router, private matDialog: MatDialog, private studentService: StudentService) {
     this.getStudentsData();
   }
 
@@ -37,13 +39,7 @@ export class StudentTableComponent implements OnInit, OnChanges, OnDestroy {
     this.getStudentsData();
   }
 
-  public ngOnInit(): void {
-
-    this.dataSource.filterPredicate = function (data, filter) {
-      return data.firstName.indexOf(filter) !== -1 || data.lastName.indexOf(filter) !== -1;
-    }
-
-  }
+  public ngOnInit(): void { }
 
   public  ngOnDestroy(): void{
     this.studentsSuscription.unsubscribe();
@@ -90,10 +86,6 @@ export class StudentTableComponent implements OnInit, OnChanges, OnDestroy {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  private addStudent(student: Student): void{
-    this.dataSource.data.push(student);
-  }
-
   public onEditStudent(selectedStudent: Student): void {
 
     if(selectedStudent){
@@ -126,16 +118,26 @@ export class StudentTableComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private updateStudent(updatedStudent: Student) {
-
     this.studentsSuscription = this.studentService.update(updatedStudent).subscribe(result =>{
-      this.getStudentsData();
-      this.studentsSuscription.unsubscribe();
+      this.refreshData();
     });
   }
 
   public onDeleteStudent(selectedStudent: Student): void {
-    const updatedDatasource = this.dataSource.data.filter(s => s.id !== selectedStudent.id);
-    this.dataSource.data = updatedDatasource;
+
+    const dialogRef = this.matDialog.open(DeleteWarningDialogComponent, {
+      width: '25rem',
+      height: '10rem',
+      data: 'student'
+    })
+
+    dialogRef.afterClosed().subscribe(result=>{
+      if(result){
+        this.studentsSuscription = this.studentService.delete(selectedStudent.id).subscribe(result =>{
+          this.refreshData();
+        });
+      }
+    });
   }
 
   private setStudentsData(): void {
@@ -144,6 +146,9 @@ export class StudentTableComponent implements OnInit, OnChanges, OnDestroy {
     this.dataSource.paginator = this.paginator;
     this.excellentStudents = this.getExcellentStudents();
     this.failedStudents = this.getFailedStudents();
+    this.dataSource.filterPredicate = function (data, filter) {
+      return data.firstName.indexOf(filter) !== -1 || data.lastName.indexOf(filter) !== -1;
+    }
   }
 
   public onAddStudent(): void {
@@ -163,9 +168,9 @@ export class StudentTableComponent implements OnInit, OnChanges, OnDestroy {
         average: Math.floor((Math.random() * (99 - 45 + 1)) + 45),
         absences: Math.floor((Math.random() * (8 - 1 + 1)) + 1),
       }
-      this.addStudent(newStudent);
       this.studentsSuscription = this.studentService.create(newStudent).subscribe(result =>{
-        this.studentsSuscription.unsubscribe();
+        this.dataSource.data.push(result);
+        this.refreshData();
       });
     });
 
@@ -185,5 +190,9 @@ export class StudentTableComponent implements OnInit, OnChanges, OnDestroy {
       this.setStudentsData();
       this.studentsSuscription.unsubscribe();
     });
+  }
+
+  private refreshData(): void {
+    this.getStudentsData();
   }
 }

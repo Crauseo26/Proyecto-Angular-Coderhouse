@@ -4,21 +4,10 @@ import { MatSort } from '@angular/material/sort';
 import { map } from 'rxjs/operators';
 import { Observable, of as observableOf, merge } from 'rxjs';
 import {StudentService} from "../../../shared/services/student.service";
+import {Student} from "../../../shared/models/student.model";
 
 // TODO: Replace this with your own data model type
-export interface Student {
-  id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  gender: string;
-  birthday: Date;
-  address: string;
-  phone: string;
-  average: number;
-  absences: number;
-  profilePhoto: string;
-}
+
 
 /**
  * Data source for the ExampleTable view. This class should

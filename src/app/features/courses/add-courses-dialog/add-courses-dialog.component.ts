@@ -1,7 +1,6 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {Course} from "../../../shared/models/courses.model";
+import {MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-add-courses-dialog',

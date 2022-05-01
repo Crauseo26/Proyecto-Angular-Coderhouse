@@ -1,6 +1,6 @@
-import {Student} from "../../features/students/student-table/student-table-datasource";
 import {Teacher} from "./teacher.model";
 import {Lecture} from "./lecture.model";
+import {Student} from "./student.model";
 
 export interface Course {
   id: number,

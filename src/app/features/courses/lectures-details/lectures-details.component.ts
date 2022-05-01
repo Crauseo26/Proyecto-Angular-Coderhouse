@@ -1,6 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA} from "@angular/material/dialog";
-import {Student} from "../../students/student-table/student-table-datasource";
 import {Lecture} from "../../../shared/models/lecture.model";
 
 @Component({

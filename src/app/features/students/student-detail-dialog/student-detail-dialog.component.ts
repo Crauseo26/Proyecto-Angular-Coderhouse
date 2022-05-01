@@ -1,7 +1,6 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog} from "@angular/material/dialog";
-import {Student} from "../student-table/student-table-datasource";
-import {ChangeProfilePhotoComponent} from "./change-profile-photo/change-profile-photo.component";
+import {Student} from "../../../shared/models/student.model";
 
 @Component({
   selector: 'app-student-detail-dialog',

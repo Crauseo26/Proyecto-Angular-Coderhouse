@@ -3,7 +3,6 @@ import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {MOCK_API_BASE_ROUTE} from "../constants/API.services";
 import {catchError, Observable, throwError} from "rxjs";
 import {Course} from "../models/courses.model";
-import {Student} from "../../features/students/student-table/student-table-datasource";
 
 @Injectable({
   providedIn: 'root'

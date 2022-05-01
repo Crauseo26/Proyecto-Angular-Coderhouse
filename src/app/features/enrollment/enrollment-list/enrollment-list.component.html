@@ -1,0 +1,35 @@
+<div class="container">
+  <div class="row">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
+      <ng-container matColumnDef="index">
+        <th mat-header-cell *matHeaderCellDef >No.</th>
+        <td mat-cell *matCellDef="let row">{{row.id}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="enrollDate">
+        <th mat-header-cell *matHeaderCellDef>Enroll Date</th>
+        <td mat-cell *matCellDef="let row">{{row.date | date: 'longDate'}}</td>
+      </ng-container>
+      <ng-container matColumnDef="course">
+        <th mat-header-cell *matHeaderCellDef >Course</th>
+        <td mat-cell *matCellDef="let row">{{row.Course.name}}</td>
+      </ng-container>
+      <ng-container matColumnDef="student">
+        <th mat-header-cell *matHeaderCellDef >Course</th>
+        <td mat-cell *matCellDef="let row">{{row.Student.firstName | studentNames: row.Student.lastName}}</td>
+      </ng-container>
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef >Actions</th>
+        <td mat-cell *matCellDef="let row">
+          <button mat-icon-button (click)="onDeleteCourse(row)"><mat-icon>delete</mat-icon></button>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+      <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of courses"></mat-paginator>
+  </div>
+
+
+</div>
+

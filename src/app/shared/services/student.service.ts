@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import {catchError, Observable, throwError} from "rxjs";
-import {Student} from "../../features/students/student-table/student-table-datasource";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {MOCK_API_BASE_ROUTE} from "../constants/API.services";
+import {Student} from "../models/student.model";
 
 @Injectable({
   providedIn: 'root'

@@ -1,6 +1,7 @@
 import {Directive, ElementRef, Input, OnInit, Renderer2} from '@angular/core';
 import {EXCELLENT_STUDENT_THRESHOLD, FAILED_STUDENT_THRESHOLD} from "../constants/constants";
-import {Student} from "../../features/students/student-table/student-table-datasource";
+import {Student} from "../models/student.model";
+
 
 @Directive({
   selector: '[studentRecognition]'

@@ -1,8 +1,8 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {CoursesService} from "../../../shared/services/courses.service";
 import {Course} from "../../../shared/models/courses.model";
 import {animate, state, style, transition, trigger} from "@angular/animations";
-import {MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {MatDialog} from "@angular/material/dialog";
 import {LecturesDetailsComponent} from "../lectures-details/lectures-details.component";
 import {CoursesEditDialogComponent} from "../courses-edit-dialog/courses-edit-dialog.component";
 import {DeleteWarningDialogComponent} from "../../../shared/delete-warning-dialog/delete-warning-dialog.component";
@@ -10,6 +10,9 @@ import {AddCoursesDialogComponent} from "../add-courses-dialog/add-courses-dialo
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
+import {StudentService} from "../../../shared/services/student.service";
+import {EnrollmentService} from "../../../shared/services/enrollment.service";
+import {Student} from "../../../shared/models/student.model";
 
 @Component({
   selector: 'app-courses-list',
@@ -27,28 +30,29 @@ export class CoursesListComponent implements OnInit {
   public columnsToDisplay = ['name', 'teacher', 'startPeriod', 'actions'];
   public expandedRow: Course | null = null;
   public dataSource!: MatTableDataSource<Course>;
+  private student!: Student;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
 
-  constructor(private courseService: CoursesService, private dialogRef: MatDialog) {
+  constructor(private courseService: CoursesService, private dialogRef: MatDialog, private studentService: StudentService, private enrollmentService: EnrollmentService) {
     this.initialize();
   }
 
   public ngOnInit(): void {  }
 
   private initialize(): void {
-    this.courseService.get().subscribe(result =>{
-      this.dataSource = new MatTableDataSource(result);
+    this.studentService.get().subscribe(students =>{
+      this.student = students[Math.floor(Math.random() * (students.length - 1)) + 1];
+    })
+    this.courseService.get().subscribe(courses =>{
+      this.dataSource = new MatTableDataSource(courses);
       this.dataSource.paginator = this.paginator;
-
     });
   }
 
-  public ngAfterViewInit(): void {
-
-  }
+  public ngAfterViewInit(): void {}
 
   public filterTable(event: KeyboardEvent): void {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -129,6 +133,26 @@ export class CoursesListComponent implements OnInit {
         this.initialize();
       });
     });
+  }
+
+  public onEnrollment(course: Course): void {
+     const enrollment = {
+        id: undefined,
+        date: undefined,
+        Student: this.student,
+        Course: course
+      }
+      this.enrollmentService.create(enrollment).subscribe(result =>{
+        this.onEnrollmentSuccess(course);
+      });
+  }
+
+  private onEnrollmentSuccess(course: Course) {
+    course.students.push(this.student);
+    this.courseService.update(course).subscribe(result =>{
+      this.initialize();
+    })
+
   }
 }
 

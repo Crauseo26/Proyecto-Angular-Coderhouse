@@ -2,7 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {GENDERS} from "../../../shared/constants/constants";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {Student} from "../student-table/student-table-datasource";
+import {Student} from "../../../shared/models/student.model";
 
 @Component({
   selector: 'app-student-edit-dialog',

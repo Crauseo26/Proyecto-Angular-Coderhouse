@@ -1,8 +1,7 @@
-import {AfterViewInit, Component, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
-import {MatTable, MatTableDataSource} from '@angular/material/table';
-import {StudentsDataSource, Student} from './student-table-datasource';
+import {MatTableDataSource} from '@angular/material/table';
 import {EXCELLENT_STUDENT_THRESHOLD, FAILED_STUDENT_THRESHOLD} from "../../../shared/constants/constants";
 import {StudentService} from "../../../shared/services/student.service";
 import {MatDialog} from "@angular/material/dialog";
@@ -12,6 +11,7 @@ import {AddStudentDialogComponent} from "../add-student-dialog/add-student-dialo
 import {Subscription} from "rxjs";
 import {ActivatedRoute, Router} from "@angular/router";
 import {DeleteWarningDialogComponent} from "../../../shared/delete-warning-dialog/delete-warning-dialog.component";
+import {Student} from "../../../shared/models/student.model";
 
 @Component({
   selector: 'app-student-table',
@@ -109,7 +109,8 @@ export class StudentTableComponent implements OnInit, OnChanges, OnDestroy {
             lastName: result.lastName,
             phone: result.phone,
             profilePhoto: result.profilePhoto,
-            id: selectedStudent.id
+            id: selectedStudent.id,
+            Courses: []
           }
           this.updateStudent(updatedStudent);
         }
@@ -167,6 +168,7 @@ export class StudentTableComponent implements OnInit, OnChanges, OnDestroy {
         profilePhoto: result.profilePhoto,
         average: Math.floor((Math.random() * (99 - 45 + 1)) + 45),
         absences: Math.floor((Math.random() * (8 - 1 + 1)) + 1),
+        Courses: [],
       }
       this.studentsSuscription = this.studentService.create(newStudent).subscribe(result =>{
         this.dataSource.data.push(result);

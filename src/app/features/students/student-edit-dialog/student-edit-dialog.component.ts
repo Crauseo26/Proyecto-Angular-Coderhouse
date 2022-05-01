@@ -26,7 +26,6 @@ export class StudentEditDialogComponent implements OnInit {
   }
 
   public onSubmit(): void{
-
     this.dialogRef.close(this.editStudentFormGroup.value);
   }
 

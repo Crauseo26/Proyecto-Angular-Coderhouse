@@ -1,7 +1,7 @@
 <div class="container">
   <div  class="row justify-content-end options">
     <div class="col-4 add-student-section">
-      <button class="add-student-button" mat-raised-button (click)="onAddStudent()"><mat-icon aria-label="Side nav toggle icon">person_add</mat-icon> Add Student</button>
+      <button class="add-student-button" mat-raised-button (click)="onAddStudent()"><mat-icon>person_add</mat-icon> Add Student</button>
     </div>
   </div>
   <div class="row">
@@ -12,7 +12,7 @@
           <input matInput (keyup)="filterTable($event)" placeholder="student name" #input>
         </mat-form-field>
       </div>
-      <table mat-table [dataSource]="dataSource" class="full-width-table" matSort matSortActive="average" matSortDirection="desc" aria-label="Elements">
+      <table mat-table [dataSource]="dataSource" class="full-width-table" matSort matSortActive="average" matSortDirection="desc">
         <!-- Name Column -->
         <ng-container matColumnDef="fullName">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Full Name</th>

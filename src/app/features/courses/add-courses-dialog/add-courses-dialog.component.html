@@ -1,0 +1,78 @@
+<div class="dialog-container">
+  <h2 class="dialog-title">New Course Form</h2>
+  <form [formGroup]="addCourseFormGoup">
+    <mat-dialog-content>
+      <!-- Course Name-->
+      <div class="row">
+        <mat-form-field>
+          <mat-label>Name</mat-label>
+          <input matInput type="text" formControlName="name">
+          <mat-error *ngIf="validateMinLength('name')">
+            the minimum size allowed is 2 characters
+          </mat-error>
+          <mat-error *ngIf="validateRequired('name')">
+            Don't forget to fill this field cus is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <!-- description input -->
+      <div class="row">
+        <mat-form-field>
+          <mat-label>Description</mat-label>
+          <textarea matInput type="text" formControlName="description"></textarea>
+          <mat-error *ngIf="validateMinLength('description')">
+            the minimum size allowed is 15 characters
+          </mat-error>
+          <mat-error *ngIf="validateRequired('description')">
+            Don't forget to fill this field cus is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <!-- birthday datepicker input -->
+      <div class="row">
+        <div class="col-6">
+          <mat-form-field appearance="standard">
+            <mat-label>Start date:</mat-label>
+            <input matInput [matDatepicker]="startDate" formControlName="startPeriod" required>
+            <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+            <mat-datepicker #startDate></mat-datepicker>
+            <mat-error *ngIf="validateRequired('startPeriod')">
+              Don't forget to fill this field cus is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field appearance="standard">
+            <mat-label>End date:</mat-label>
+            <input matInput [matDatepicker]="endDate" formControlName="endPeriod" required>
+            <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+            <mat-datepicker #endDate></mat-datepicker>
+            <mat-error *ngIf="validateRequired('endPeriod')">
+              Don't forget to fill this field cus is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+      </div>
+      <!-- phone input -->
+      <div class="row">
+        <mat-form-field>
+          <mat-label>Capacity</mat-label>
+          <input matInput type="number" formControlName="capacity">
+          <mat-error *ngIf="validateMinValue('capacity')">
+            The minimun capacity is five students
+          </mat-error>
+          <mat-error *ngIf="validateRequired('capacity')">
+            Don't forget to fill this field cus is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions class="dialog-buttons">
+      <button mat-button (click)="onBack()">Back</button>
+      <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!addCourseFormGoup.valid">Add</button>
+    </mat-dialog-actions>
+  </form>
+</div>
+
+

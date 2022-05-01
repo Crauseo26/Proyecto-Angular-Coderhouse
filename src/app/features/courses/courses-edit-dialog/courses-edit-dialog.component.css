@@ -1,0 +1,25 @@
+.dialog-container{
+  min-width: 30rem;
+  min-height: 20rem;
+  display: flex;
+  flex-flow: column wrap;
+  text-align: center;
+}
+
+.dialog-title{
+  text-transform: capitalize;
+  font-weight: 500;
+}
+
+.dialog-buttons{
+  justify-content: right;
+}
+
+.alert{
+  color: #f44336;
+  text-align: left;
+}
+
+.mat-form-field{
+  width: 100%;
+}

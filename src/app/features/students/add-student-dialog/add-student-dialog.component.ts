@@ -17,6 +17,7 @@ export class AddStudentDialogComponent{
     firstName: new FormControl('', [Validators.required, Validators.minLength(3)]),
     lastName: new FormControl('',[Validators.required, Validators.minLength(3)]),
     email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', Validators.required),
     gender: new FormControl('', Validators.required),
     address: new FormControl('',[Validators.required, Validators.minLength(11)]),
     birthday: new FormControl('', Validators.required),
@@ -25,6 +26,7 @@ export class AddStudentDialogComponent{
   });
 
   public genders = GENDERS;
+  public isVisible = false;
 
   constructor(public dialogRef: MatDialogRef<AddStudentDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
@@ -47,5 +49,9 @@ export class AddStudentDialogComponent{
 
   public validateEmail(): boolean {
     return this.newStudentFormGroup.controls['email'].hasError('email') && !this.newStudentFormGroup.controls['email'].hasError('required');
+  }
+
+  public togglePasswordVisibility(): void{
+    this.isVisible = !this.isVisible;
   }
 }

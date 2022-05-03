@@ -14,12 +14,14 @@ export class StudentEditDialogComponent implements OnInit {
     firstName: new FormControl(this.data.firstName, [Validators.required, Validators.minLength(3)]),
     lastName: new FormControl(this.data.lastName,[Validators.required, Validators.minLength(3)]),
     email: new FormControl(this.data.email, [Validators.required, Validators.email]),
+    password: new FormControl(this.data.password, Validators.required),
     gender: new FormControl(this.data.gender, Validators.required),
     address: new FormControl(this.data.address,[Validators.required, Validators.minLength(11)]),
     birthday: new FormControl(this.data.birthday, Validators.required),
     phone: new FormControl(this.data.phone, [Validators.required, Validators.minLength(9)])
   });
   public genders = GENDERS;
+  public isVisible = false;
   constructor(@Inject(MAT_DIALOG_DATA) public data: Student, private dialogRef: MatDialogRef<StudentEditDialogComponent>) { }
 
   ngOnInit(): void {
@@ -45,5 +47,7 @@ export class StudentEditDialogComponent implements OnInit {
     return this.editStudentFormGroup.controls['email'].hasError('email') && !this.editStudentFormGroup.controls['email'].hasError('required');
   }
 
-
+  public togglePasswordVisibility(): void{
+    this.isVisible = !this.isVisible;
+  }
 }

@@ -21,7 +21,7 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef >Actions</th>
         <td mat-cell *matCellDef="let row">
-          <button mat-icon-button (click)="onDeleteCourse(row)"><mat-icon>delete</mat-icon></button>
+          <button mat-icon-button *ngIf="loggedStudent.isAdmin" (click)="onDeleteCourse(row)"><mat-icon>delete</mat-icon></button>
         </td>
       </ng-container>
       <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>

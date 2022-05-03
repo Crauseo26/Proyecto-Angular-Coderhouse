@@ -7,6 +7,8 @@ import {MatSort} from "@angular/material/sort";
 import {EnrollmentService} from "../../../shared/services/enrollment.service";
 import {DeleteWarningDialogComponent} from "../../../shared/delete-warning-dialog/delete-warning-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
+import {Student} from "../../../shared/models/student.model";
+import {AuthenticationService} from "../../../core/auth/services/authentication.service";
 
 @Component({
   selector: 'app-enrollment-list',
@@ -16,12 +18,14 @@ import {MatDialog} from "@angular/material/dialog";
 export class EnrollmentListComponent implements OnInit {
   public columnsToDisplay = ['index', 'enrollDate', 'student', 'course', 'actions'];
   public dataSource!: MatTableDataSource<Enrollment>;
+  public loggedStudent: Student;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private enrollmentService: EnrollmentService, private dialogRef: MatDialog) {
+  constructor(private enrollmentService: EnrollmentService, private dialogRef: MatDialog, private authService: AuthenticationService) {
     this.Initialize();
+    this.loggedStudent = this.authService.getLoggedStudent();
   }
 
   ngOnInit(): void {

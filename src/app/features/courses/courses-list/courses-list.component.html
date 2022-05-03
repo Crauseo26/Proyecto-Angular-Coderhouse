@@ -1,6 +1,6 @@
 <div class="container">
   <div  class="row justify-content-end options">
-    <div class="col-4 add-course-section">
+    <div class="col-4 add-course-section" *ngIf="loggedStudent.isAdmin">
       <button class="add-course-button" mat-raised-button (click)="onAddCourse()"><mat-icon>event</mat-icon> Add Course</button>
     </div>
   </div>
@@ -28,8 +28,8 @@
         <th mat-header-cell *matHeaderCellDef >Actions</th>
         <td mat-cell *matCellDef="let row">
           <button mat-icon-button (click)="expandedRow = expandedRow === row ? null : row"><mat-icon>visibility</mat-icon></button>
-          <button mat-icon-button (click)="onEditCourse(row)"><mat-icon>edit</mat-icon></button>
-          <button mat-icon-button (click)="onDeleteCourse(row)"><mat-icon>delete</mat-icon></button>
+          <button mat-icon-button *ngIf="loggedStudent.isAdmin" (click)="onEditCourse(row)"><mat-icon>edit</mat-icon></button>
+          <button mat-icon-button *ngIf="loggedStudent.isAdmin" (click)="onDeleteCourse(row)"><mat-icon>delete</mat-icon></button>
         </td>
       </ng-container>
       <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->

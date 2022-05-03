@@ -45,16 +45,31 @@
       </div>
       <!-- email input -->
       <div class="row">
-        <mat-form-field>
-          <mat-label>Email</mat-label>
-          <input matInput type="text" formControlName="email"required>
-          <mat-error *ngIf="validateEmail()">
-            Doesn't look like a valid email address
-          </mat-error>
-          <mat-error *ngIf="validateRequired('email')">
-            Don't forget to fill this field cus is <strong>required</strong>
-          </mat-error>
-        </mat-form-field>
+        <div class="row">
+          <mat-label class="section-title">Credentials:</mat-label>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <mat-label>Email</mat-label>
+            <input matInput type="text" formControlName="email"required>
+            <mat-error *ngIf="validateEmail()">
+              Doesn't look like a valid email address
+            </mat-error>
+            <mat-error *ngIf="validateRequired('email')">
+              Don't forget to fill this field cus is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <mat-label>Password</mat-label>
+            <input matInput type="password" formControlName="password"required [type]="isVisible ? 'text' : 'password'">
+            <mat-icon matSuffix (click)="togglePasswordVisibility()">visibility</mat-icon>
+            <mat-error *ngIf="validateRequired('password')">
+              Don't forget to fill this field cus is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
       </div>
       <!-- birthday datepicker input -->
       <div class="row">

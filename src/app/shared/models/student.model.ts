@@ -13,4 +13,6 @@ export interface Student {
   absences: number;
   profilePhoto: string;
   Courses: Course[];
+  password: string;
+  isAdmin: boolean;
 }

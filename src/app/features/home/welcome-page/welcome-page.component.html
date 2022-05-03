@@ -2,23 +2,26 @@
   <div class="row login-form-container">
     <mat-card class="login-form-card mat-elevation-z8">
       <mat-card-title class="form-title title">Login</mat-card-title>
+      <form [formGroup]="loginForm">
       <mat-card-content class="login-form">
         <div class="row">
-          <mat-label class="title">Username</mat-label>
+          <mat-label class="title">Email</mat-label>
           <mat-form-field>
-            <input matInput class="login-form-input" type="text">
+            <input matInput formControlName="email" class="login-form-input" type="text" required>
           </mat-form-field>
         </div>
-        <div class="row">
+        <div class="row">.
           <mat-label class="title">Password</mat-label>
           <mat-form-field>
-            <input matInput type="password">
+            <input matInput type="password" formControlName="password" required [type]="isVisible ? 'text' : 'password'">
+            <mat-icon matSuffix (click)="togglePasswordVisibility()">visibility</mat-icon>
           </mat-form-field>
         </div>
       </mat-card-content>
+      </form>
       <mat-card-actions class="login-form-buttons">
         <div class="row justify-content-center">
-          <button class="formButton title" mat-raised-button>Log in</button>
+          <button class="formButton title" mat-raised-button [disabled]="!loginForm.dirty" (click)="onLogIn()">Log in</button>
         </div>
         <div class="row justify-content-center" >
           <div class="col-4">

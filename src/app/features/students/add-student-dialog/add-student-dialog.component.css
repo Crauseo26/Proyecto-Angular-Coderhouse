@@ -6,6 +6,12 @@
   text-align: center;
 }
 
+.section-title{
+  font-weight: 500;
+  font-style: italic;
+  font-size: 18px;
+}
+
 .dialog-title{
   text-transform: capitalize;
   font-weight: 500;

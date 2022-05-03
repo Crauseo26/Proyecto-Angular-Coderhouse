@@ -17,6 +17,7 @@ import {MatNativeDateModule} from "@angular/material/core";
 import {MatSelectModule} from "@angular/material/select";
 import {MatDividerModule} from "@angular/material/divider";
 import {MatCardModule} from "@angular/material/card";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 
 
@@ -40,6 +41,7 @@ import {MatCardModule} from "@angular/material/card";
     MatSelectModule,
     MatDividerModule,
     FormsModule, MatCardModule,
+    MatSnackBarModule
   ],
   exports:[
     MatSidenavModule,
@@ -59,6 +61,7 @@ import {MatCardModule} from "@angular/material/card";
     MatSelectModule,
     MatDividerModule,
     FormsModule, MatCardModule,
+    MatSnackBarModule
   ]
 })
 export class MaterialModule { }

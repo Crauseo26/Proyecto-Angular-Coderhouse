@@ -2,6 +2,10 @@
   height: 100%;
   background-color: transparent;
 }
+
+.spacer {
+  flex: 1 1 auto;
+}
 .sidenav {
   margin-top: 64px;
   padding: 0;

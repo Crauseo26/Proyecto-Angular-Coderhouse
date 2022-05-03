@@ -13,6 +13,7 @@ import {MatSort} from "@angular/material/sort";
 import {StudentService} from "../../../shared/services/student.service";
 import {EnrollmentService} from "../../../shared/services/enrollment.service";
 import {Student} from "../../../shared/models/student.model";
+import {AuthenticationService} from "../../../core/auth/services/authentication.service";
 
 @Component({
   selector: 'app-courses-list',
@@ -31,13 +32,15 @@ export class CoursesListComponent implements OnInit {
   public expandedRow: Course | null = null;
   public dataSource!: MatTableDataSource<Course>;
   private student!: Student;
+  public loggedStudent!: Student;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
 
-  constructor(private courseService: CoursesService, private dialogRef: MatDialog, private studentService: StudentService, private enrollmentService: EnrollmentService) {
+  constructor(private courseService: CoursesService, private dialogRef: MatDialog, private studentService: StudentService, private enrollmentService: EnrollmentService, private authService: AuthenticationService) {
     this.initialize();
+    this.loggedStudent = this.authService.getLoggedStudent();
   }
 
   public ngOnInit(): void {  }

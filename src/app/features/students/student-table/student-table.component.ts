@@ -12,6 +12,7 @@ import {Subscription} from "rxjs";
 import {ActivatedRoute, Router} from "@angular/router";
 import {DeleteWarningDialogComponent} from "../../../shared/delete-warning-dialog/delete-warning-dialog.component";
 import {Student} from "../../../shared/models/student.model";
+import {AuthenticationService} from "../../../core/auth/services/authentication.service";
 
 @Component({
   selector: 'app-student-table',
@@ -27,12 +28,15 @@ export class StudentTableComponent implements OnInit, OnChanges, OnDestroy {
   public dataSource!: MatTableDataSource<Student>;
   private excellentStudents!: Student[];
   private failedStudents!: Student[];
+  public loggedStudent!: Student;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   public displayedColumns = ['average', 'fullName', 'actions'];
 
-  constructor(private route: ActivatedRoute, private router: Router, private matDialog: MatDialog, private studentService: StudentService) {
+  constructor(private route: ActivatedRoute, private router: Router, private matDialog: MatDialog, private studentService: StudentService, private authService: AuthenticationService) {
     this.getStudentsData();
+    this.loggedStudent = this.authService.getLoggedStudent();
+
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
@@ -52,7 +56,6 @@ export class StudentTableComponent implements OnInit, OnChanges, OnDestroy {
         return b.average - a.average;
       }
     );
-    console.log(filteredStudentList?.slice(0,10))
     return filteredStudentList.slice(0,10);
   }
 
@@ -110,7 +113,9 @@ export class StudentTableComponent implements OnInit, OnChanges, OnDestroy {
             phone: result.phone,
             profilePhoto: result.profilePhoto,
             id: selectedStudent.id,
-            Courses: []
+            Courses: [],
+            password: result.password,
+            isAdmin: selectedStudent.isAdmin,
           }
           this.updateStudent(updatedStudent);
         }
@@ -169,6 +174,8 @@ export class StudentTableComponent implements OnInit, OnChanges, OnDestroy {
         average: Math.floor((Math.random() * (99 - 45 + 1)) + 45),
         absences: Math.floor((Math.random() * (8 - 1 + 1)) + 1),
         Courses: [],
+        password: result.password,
+        isAdmin: false,
       }
       this.studentsSuscription = this.studentService.create(newStudent).subscribe(result =>{
         this.dataSource.data.push(result);

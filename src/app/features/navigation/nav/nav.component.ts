@@ -22,9 +22,15 @@ export class NavComponent {
     );
 
   constructor(private breakpointObserver: BreakpointObserver, private authService: AuthenticationService, private router: Router) {
-    this.authService.loggedStatusChange.subscribe(value =>{
+   this.authService.loggedStatusChange.subscribe(value =>{
       this.isLoggedIn = value;
-    })
+    });
+
+    if(this.authService.getLoggedStudent() === ''){
+      this.isLoggedIn = false;
+    }else{
+      this.isLoggedIn = true;
+    }
   }
 
   public onLogOut(): void {

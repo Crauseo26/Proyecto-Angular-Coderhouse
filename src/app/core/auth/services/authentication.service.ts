@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import {StudentService} from "../../../shared/services/student.service";
 import {Student} from "../../../shared/models/student.model";
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, find, Observable} from "rxjs";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {map} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -14,23 +15,12 @@ export class AuthenticationService {
 
   constructor(private studentService: StudentService, private snackBar: MatSnackBar) { }
 
-  private setLoggedIn(value: Student){
-    localStorage.setItem('loggedIn', JSON.stringify(value));
-    this.loggedStatus.next(true);
-  }
-
-  public onLogin(email: string, password: string): void{
-    this.studentService.get().subscribe(students =>{
-      let studentExist = students.find(student =>{
-        return student.email === email && student.password === password;
-      });
-
-      if(studentExist){
-        this.setLoggedIn(studentExist);
-      }else{
-        this.snackBar.open('Wrong Credentials, please try again', 'close', {verticalPosition: "top", horizontalPosition: "center", duration: 2500});
-      }
-    });
+  public onLogin(email: string, password: string): Observable<Student | undefined>{
+    return this.studentService.get().pipe(
+      map((students: Student[])=>{
+        return students.find(student=> student.email === email && student.password === password)
+      })
+    );
   }
 
   public getLoggedStudent(): string {

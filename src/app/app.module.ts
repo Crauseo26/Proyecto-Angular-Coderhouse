@@ -7,6 +7,10 @@ import { SharedModule } from './shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NavigationModule } from './features/navigation/navigation.module';
 import { CoreModule } from './core/core.module';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
+import {ROOT_REDUCERS} from "./shared/state/app.state";
 
 @NgModule({
   declarations: [AppComponent],
@@ -18,6 +22,8 @@ import { CoreModule } from './core/core.module';
     NavigationModule,
     CoreModule,
     SharedModule,
+    StoreModule.forRoot(ROOT_REDUCERS),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
   ],
   providers: [HttpClient],
   bootstrap: [AppComponent],

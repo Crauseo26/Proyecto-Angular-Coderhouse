@@ -40,7 +40,9 @@ export class CoursesListComponent implements OnInit {
 
   constructor(private courseService: CoursesService, private dialogRef: MatDialog, private studentService: StudentService, private enrollmentService: EnrollmentService, private authService: AuthenticationService) {
     this.initialize();
-    this.loggedStudent = this.authService.getLoggedStudent();
+    if(this.authService.getLoggedStudent() !== ''){
+      this.loggedStudent = JSON.parse(this.authService.getLoggedStudent());
+    }
   }
 
   public ngOnInit(): void {  }

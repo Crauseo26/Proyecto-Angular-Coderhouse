@@ -35,7 +35,9 @@ export class StudentTableComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor(private route: ActivatedRoute, private router: Router, private matDialog: MatDialog, private studentService: StudentService, private authService: AuthenticationService) {
     this.getStudentsData();
-    this.loggedStudent = this.authService.getLoggedStudent();
+    if(this.authService.getLoggedStudent() !== ''){
+      this.loggedStudent = JSON.parse(this.authService.getLoggedStudent());
+    }
 
   }
 

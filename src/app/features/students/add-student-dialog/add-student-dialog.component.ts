@@ -69,10 +69,6 @@ export class AddStudentDialogComponent {
     );
   }
 
-  public togglePasswordVisibility(): void {
-    this.isVisible = !this.isVisible;
-  }
-
   public togglePasswordVisibility(): void{
     this.isVisible = !this.isVisible;
   }

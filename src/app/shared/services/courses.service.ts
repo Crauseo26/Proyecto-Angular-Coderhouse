@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {MOCK_API_BASE_ROUTE} from "../constants/API.services";
-import {catchError, Observable, throwError} from "rxjs";
+import {catchError, delay, Observable, throwError} from "rxjs";
 import {Course} from "../models/courses.model";
 
 @Injectable({
@@ -18,10 +18,10 @@ export class CoursesService {
   }
 
   public get(): Observable<Course[]> {
-      return this.http.get<Course[]>(this.queryRoute);
+      return this.http.get<Course[]>(this.queryRoute).pipe(catchError(this.handleError), delay(2000));
   }
 
-  public getCorusePhoto(): Observable<any>{
+  public getCoursePhoto(): Observable<any>{
     return this.http.get<any>('https://api.unsplash.com/search/photos?page=1&per_page=25&query=tecnology&client_id=LsRXhs_TYyEvPvxrpu4uqokmhXY6hwxDIdk5ME2EvZc')
   }
 

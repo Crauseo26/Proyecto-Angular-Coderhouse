@@ -1,13 +1,13 @@
 <div class="container-fluid home-container">
-  <div class="row login-form-container">
+  <div class="row login-form-container" *ngIf="!isSessionActive">
     <mat-card class="login-form-card mat-elevation-z8">
       <mat-card-title class="form-title title">Login</mat-card-title>
       <form [formGroup]="loginForm">
       <mat-card-content class="login-form">
         <div class="row">
-          <mat-label class="title">Email</mat-label>
+          <mat-label class="title">Username</mat-label>
           <mat-form-field>
-            <input matInput formControlName="email" class="login-form-input" type="text" required>
+            <input matInput formControlName="username" class="login-form-input" type="text" required>
           </mat-form-field>
         </div>
         <div class="row">.

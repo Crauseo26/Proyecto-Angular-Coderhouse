@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {MOCK_API_BASE_ROUTE} from "../constants/API.services";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-import {catchError, Observable, throwError} from "rxjs";
+import {catchError, delay, Observable, throwError} from "rxjs";
 import {Course} from "../models/courses.model";
 import {Enrollment} from "../models/enollment.model";
 
@@ -19,7 +19,7 @@ export class EnrollmentService {
   }
 
   public get(): Observable<Enrollment[]> {
-    return this.http.get<Enrollment[]>(this.queryRoute);
+    return this.http.get<Enrollment[]>(this.queryRoute).pipe(catchError(this.handleError), delay(2000));
   }
 
   public create(enrollment: Enrollment): Observable<Enrollment> {

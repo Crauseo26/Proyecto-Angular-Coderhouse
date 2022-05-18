@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {catchError, Observable, throwError} from "rxjs";
+import {catchError, delay, Observable, throwError} from "rxjs";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {MOCK_API_BASE_ROUTE} from "../constants/API.services";
 import {Student} from "../models/student.model";
@@ -16,7 +16,7 @@ export class StudentService {
   }
 
   public get(): Observable<Student[]> {
-    return this.http.get<Student[]>(this.queryRoute).pipe(catchError(this.handleError));
+    return this.http.get<Student[]>(this.queryRoute).pipe(catchError(this.handleError), delay(2000));
   }
 
   public create(student: Student): Observable<Student> {
@@ -30,7 +30,7 @@ export class StudentService {
 
   public delete(studentId: number): Observable<void>{
     const deleteQueryRoute = this.queryRoute.concat('/', studentId.toString());
-    return this.http.delete<void>(deleteQueryRoute).pipe(catchError(this.handleError));
+    return this.http.delete<void>(deleteQueryRoute).pipe(catchError(this.handleError), delay(2000));
   }
 
   public handleError(error: HttpErrorResponse){

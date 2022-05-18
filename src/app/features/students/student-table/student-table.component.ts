@@ -13,6 +13,11 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {DeleteWarningDialogComponent} from "../../../shared/delete-warning-dialog/delete-warning-dialog.component";
 import {Student} from "../../../shared/models/student.model";
 import {AuthenticationService} from "../../../core/auth/services/authentication.service";
+import {AppState} from "../../../shared/state/app.state";
+import {Store} from "@ngrx/store";
+import {activeSessionSelector} from "../../../shared/state/selectors/login.selector";
+import {loadedStudents, loadStudents} from "../../../shared/state/actions/students.actions";
+import {studentsSelector} from "../../../shared/state/selectors/students.selector";
 
 @Component({
   selector: 'app-student-table',
@@ -23,21 +28,28 @@ import {AuthenticationService} from "../../../core/auth/services/authentication.
 export class StudentTableComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  private students: Student[] = [];
-  private studentsSuscription!: Subscription;
+  private studentsSubscription!: Subscription;
   public dataSource!: MatTableDataSource<Student>;
   private excellentStudents!: Student[];
   private failedStudents!: Student[];
-  public loggedStudent!: Student;
+  public isAdmin= false;
+  public isLoading = false;
+
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   public displayedColumns = ['average', 'fullName', 'actions'];
 
-  constructor(private route: ActivatedRoute, private router: Router, private matDialog: MatDialog, private studentService: StudentService, private authService: AuthenticationService) {
+  constructor(private route: ActivatedRoute,
+              private router: Router,
+              private matDialog: MatDialog,
+              private studentService: StudentService,
+              private authService: AuthenticationService,
+              private store: Store<AppState>) {
+
     this.getStudentsData();
-    if(this.authService.getLoggedStudent() !== ''){
-      this.loggedStudent = JSON.parse(this.authService.getLoggedStudent());
-    }
+    this.store.select(activeSessionSelector).subscribe(session =>{
+      this.isAdmin = session.currentUser.isAdmin;
+    })
 
   }
 
@@ -48,7 +60,7 @@ export class StudentTableComponent implements OnInit, OnChanges, OnDestroy {
   public ngOnInit(): void { }
 
   public  ngOnDestroy(): void{
-    this.studentsSuscription.unsubscribe();
+    this.studentsSubscription.unsubscribe();
   }
 
 
@@ -126,7 +138,7 @@ export class StudentTableComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private updateStudent(updatedStudent: Student) {
-    this.studentsSuscription = this.studentService.update(updatedStudent).subscribe(result =>{
+    this.studentsSubscription = this.studentService.update(updatedStudent).subscribe(result =>{
       this.refreshData();
     });
   }
@@ -141,7 +153,7 @@ export class StudentTableComponent implements OnInit, OnChanges, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result=>{
       if(result){
-        this.studentsSuscription = this.studentService.delete(selectedStudent.id).subscribe(result =>{
+        this.studentsSubscription = this.studentService.delete(selectedStudent.id).subscribe(result =>{
           this.refreshData();
         });
       }
@@ -149,7 +161,9 @@ export class StudentTableComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private setStudentsData(): void {
-    this.dataSource = new MatTableDataSource<Student>(this.students);
+    this.store.select(studentsSelector).subscribe(state =>{
+      this.dataSource = new MatTableDataSource<Student>(state.students);
+    })
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
     this.excellentStudents = this.getExcellentStudents();
@@ -179,7 +193,7 @@ export class StudentTableComponent implements OnInit, OnChanges, OnDestroy {
         password: result.password,
         isAdmin: false,
       }
-      this.studentsSuscription = this.studentService.create(newStudent).subscribe(result =>{
+      this.studentsSubscription = this.studentService.create(newStudent).subscribe(result =>{
         this.dataSource.data.push(result);
         this.refreshData();
       });
@@ -192,14 +206,17 @@ export class StudentTableComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public isTopTenStudent(student: Student): boolean {
-    return this.isExcellentStudent(student)? true : this.isFailedStudent(student)? true: false;
+    return this.isExcellentStudent(student)? true : this.isFailedStudent(student);
   }
 
   private getStudentsData(): void {
-    this.studentsSuscription = this.studentService.get().subscribe(result => {
-      this.students = result;
+    this.store.dispatch(loadStudents());
+    this.store.select(studentsSelector).subscribe(state =>{
+      this.isLoading = state.isLoading;
+    });
+    this.studentsSubscription = this.studentService.get().subscribe(result => {
+      this.store.dispatch(loadedStudents({students: result}))
       this.setStudentsData();
-      this.studentsSuscription.unsubscribe();
     });
   }
 

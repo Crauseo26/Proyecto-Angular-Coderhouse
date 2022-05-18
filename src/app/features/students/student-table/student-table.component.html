@@ -1,6 +1,6 @@
 <div class="container">
   <div  class="row justify-content-end options">
-    <div class="col-4 add-student-section" *ngIf="loggedStudent.isAdmin">
+    <div class="col-4 add-student-section" *ngIf="isAdmin">
       <button class="add-student-button" mat-raised-button (click)="onAddStudent()"><mat-icon>person_add</mat-icon> Add Student</button>
     </div>
   </div>
@@ -36,10 +36,10 @@
             <button mat-icon-button (click)="onStudentDetail(row)">
               <mat-icon>info</mat-icon>
             </button>
-            <button mat-icon-button *ngIf="loggedStudent.isAdmin" (click)="onEditStudent(row)">
+            <button mat-icon-button *ngIf="isAdmin" (click)="onEditStudent(row)">
               <mat-icon>edit</mat-icon>
             </button>
-            <button mat-icon-button *ngIf="loggedStudent.isAdmin" (click)="onDeleteStudent(row)">
+            <button mat-icon-button *ngIf="isAdmin" (click)="onDeleteStudent(row)">
               <mat-icon>delete</mat-icon>
             </button>
           </td>
@@ -54,6 +54,9 @@
         </tr>
       </table>
 
+      <div class="row justify-content-center loading-spinner" *ngIf="isLoading" >
+        <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+      </div>
       <mat-paginator #paginator
                      [length]="dataSource?.data?.length"
                      [pageIndex]="0"

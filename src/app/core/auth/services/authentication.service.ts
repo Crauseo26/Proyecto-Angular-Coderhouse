@@ -1,35 +1,40 @@
 import { Injectable } from '@angular/core';
-import {StudentService} from "../../../shared/services/student.service";
-import {Student} from "../../../shared/models/student.model";
-import {BehaviorSubject, find, Observable} from "rxjs";
-import {MatSnackBar} from "@angular/material/snack-bar";
+import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
+import {UserLogin} from "../../../shared/models/user-login.model";
+import {User} from "../../../shared/models/user.model";
+import {UsersService} from "../../../shared/services/users.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
 
-  public loggedStatus = new BehaviorSubject<boolean>(false);
-  public loggedStatusChange = this.loggedStatus.asObservable();
+  constructor(private userService: UsersService) { }
 
-  constructor(private studentService: StudentService, private snackBar: MatSnackBar) { }
-
-  public onLogin(email: string, password: string): Observable<Student | undefined>{
-    return this.studentService.get().pipe(
-      map((students: Student[])=>{
-        return students.find(student=> student.email === email && student.password === password)
+  public onLogin(username: string, password: string): Observable<User | undefined>{
+    return this.userService.get().pipe(
+      map((users: User[])=>{
+        return users.find(user=> user.username === username && user.password === password)
       })
     );
   }
 
-  public getLoggedStudent(): string {
-    const loggedStudent= localStorage.getItem('loggedIn') || '';
-    return loggedStudent;
+  public saveSession(loggedStudent: UserLogin): void {
+    localStorage.setItem('currentUser', JSON.stringify(loggedStudent));
   }
 
-  public logOut(): void {
-    localStorage.removeItem('loggedIn');
-    this.loggedStatus.next(false);
+  public isSessionSaved(): boolean {
+    const loggedStudent = localStorage.getItem('currentUser');
+    return !!loggedStudent;
+  }
+
+  public getSavedSession(): UserLogin {
+    const savedSession = localStorage.getItem('currentUser');
+    return savedSession ? JSON.parse(savedSession) : null;
+  }
+
+  public removeSession(): void{
+    localStorage.removeItem('currentUser');
   }
 }

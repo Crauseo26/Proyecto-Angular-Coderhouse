@@ -26,6 +26,11 @@ const routes: Routes = [
     canActivate: [AuthorizationGuard],
     loadChildren: () => import('./features/enrollment/enrollment.module').then((m) => m.EnrollmentModule),
   },
+  {
+    path: "Users",
+    canActivate: [AuthorizationGuard],
+    loadChildren: () => import('./features/users/users.module').then((m) => m.UsersModule),
+  },
 
 ];
 

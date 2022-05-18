@@ -11,6 +11,8 @@ import {activeSessionSelector} from "../../../shared/state/selectors/login.selec
 })
 export class AuthorizationGuard implements CanActivate {
 
+  private isSessionActive!: boolean;
+
   constructor(private router: Router, private snackBar: MatSnackBar, private store: Store<AppState>) {
   }
 
@@ -18,15 +20,11 @@ export class AuthorizationGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-    let isSessionActive = false;
-
     this.store.select(activeSessionSelector).subscribe(session =>{
-      isSessionActive = session.isActive;
+      this.isSessionActive = session.isActive;
     })
 
-    console.log(isSessionActive);
-
-    if (isSessionActive) {
+    if (this.isSessionActive) {
       return true;
     } else {
       this.snackBar.open('Please, log in to gain access to this function', 'close', {
@@ -34,7 +32,7 @@ export class AuthorizationGuard implements CanActivate {
         horizontalPosition: 'center',
         duration: 2500
       });
-      return this.router.navigate(['/Home'], {queryParams: {returnUrl: state.url}});
+      return this.router.navigate(['/Home']);
     }
   }
 }

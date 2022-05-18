@@ -36,9 +36,6 @@ export class EnrollmentListComponent implements OnInit {
       'actions',
     ];
     this.Initialize();
-    if(this.authService.getLoggedStudent() !== ''){
-      this.loggedStudent = JSON.parse(this.authService.getLoggedStudent());
-    }
   }
 
   ngOnInit(): void {}

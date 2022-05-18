@@ -18,7 +18,7 @@
       </button>
       <span class="toolbar-title">Coderhouse</span>
       <span class="spacer"></span>
-      <a mat-button color="accent" *ngIf="isLoggedIn" (click)="onLogOut()">Log out</a>
+      <a mat-button color="accent" *ngIf="isLoggedIn" (click)="onLogOut()"> <mat-icon>logout</mat-icon> Log out</a>
     </mat-toolbar>
     <!-- Add Content Here -->
     <router-outlet></router-outlet>

@@ -37,6 +37,7 @@ export class NavComponent {
 
   public onLogOut(): void {
     this.store.dispatch(closeSession());
+    this.authService.removeSession();
     this.snackBar.open('Logout Successful, see you later 🤗', 'close', {verticalPosition: "top", duration: 1500, horizontalPosition: 'center'})
     setTimeout(() => { this.router.navigate(['/Home']) },1500);
   }

@@ -3,7 +3,9 @@ import {MOCK_API_BASE_ROUTE} from "../constants/API.services";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {catchError, delay, Observable, throwError} from "rxjs";
 import {Course} from "../models/courses.model";
-import {Enrollment} from "../models/enollment.model";
+import {Enrollment} from "../models/enrollment.model";
+import {StudentService} from "./student.service";
+import {CoursesService} from "./courses.service";
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +15,7 @@ export class EnrollmentService {
   private coursesEndpoint: string;
   private queryRoute: string;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private studentService: StudentService, private courseService: CoursesService) {
     this.coursesEndpoint = 'Enrollment'
     this.queryRoute = `${MOCK_API_BASE_ROUTE}/${this.coursesEndpoint}`;
   }

@@ -9,7 +9,7 @@ import {Course} from "../../../shared/models/courses.model";
   styleUrls: ['./courses-edit-dialog.component.css']
 })
 export class CoursesEditDialogComponent implements OnInit {
-  public editCourseFormGoup = new FormGroup({
+  public editCourseFormGroup = new FormGroup({
     name: new FormControl(this.data.name, [Validators.required, Validators.minLength(2)]),
     description: new FormControl(this.data.description,[Validators.required, Validators.minLength(15)]),
     startPeriod: new FormControl(this.data.startPeriod, Validators.required),
@@ -22,7 +22,7 @@ export class CoursesEditDialogComponent implements OnInit {
   }
 
   public onSubmit(): void{
-    this.dialogRef.close(this.editCourseFormGoup.value);
+    this.dialogRef.close(this.editCourseFormGroup.value);
   }
 
   public onBack(): void{
@@ -30,14 +30,14 @@ export class CoursesEditDialogComponent implements OnInit {
   }
 
   public validateMinLength(requiredControl: string): boolean {
-    return this.editCourseFormGoup.controls[requiredControl].hasError('minlength') && !this.editCourseFormGoup.controls[requiredControl].hasError('required');
+    return this.editCourseFormGroup.controls[requiredControl].hasError('minlength') && !this.editCourseFormGroup.controls[requiredControl].hasError('required');
   }
 
   public validateRequired(requiredControl: string): boolean {
-    return this.editCourseFormGoup.controls[requiredControl].hasError('required');
+    return this.editCourseFormGroup.controls[requiredControl].hasError('required');
   }
 
   validateMinValue(requiredControl: string) {
-    return this.editCourseFormGoup.controls[requiredControl].hasError('min') && !this.editCourseFormGoup.controls[requiredControl].hasError('required');
+    return this.editCourseFormGroup.controls[requiredControl].hasError('min') && !this.editCourseFormGroup.controls[requiredControl].hasError('required');
   }
 }

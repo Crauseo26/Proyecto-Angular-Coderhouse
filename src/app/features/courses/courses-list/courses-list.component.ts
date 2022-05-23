@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
 import {CoursesService} from "../../../shared/services/courses.service";
 import {Course} from "../../../shared/models/courses.model";
 import {animate, state, style, transition, trigger} from "@angular/animations";
@@ -14,6 +14,13 @@ import {StudentService} from "../../../shared/services/student.service";
 import {EnrollmentService} from "../../../shared/services/enrollment.service";
 import {Student} from "../../../shared/models/student.model";
 import {AuthenticationService} from "../../../core/auth/services/authentication.service";
+import {AppState} from "../../../shared/state/app.state";
+import {Store} from "@ngrx/store";
+import {loadCourses, loadedCourses} from "../../../shared/state/actions/courses.actions";
+import {coursesSelector} from "../../../shared/state/selectors/courses.selector";
+import {activeSessionSelector} from "../../../shared/state/selectors/login.selector";
+import {Subscription} from "rxjs";
+import {EnrollmentListComponent} from "../../enrollment/enrollment-list/enrollment-list.component";
 
 @Component({
   selector: 'app-courses-list',
@@ -27,42 +34,57 @@ import {AuthenticationService} from "../../../core/auth/services/authentication.
   ],
   styleUrls: ['./courses-list.component.css']
 })
-export class CoursesListComponent implements OnInit {
+export class CoursesListComponent implements OnChanges {
   public columnsToDisplay = ['name', 'teacher', 'startPeriod', 'actions'];
   public expandedRow: Course | null = null;
   public dataSource!: MatTableDataSource<Course>;
-  private student!: Student;
-  public loggedStudent!: Student;
+  public coursesSubscription = new Subscription();
+  public isLoading = false;
+  public isAdmin = false;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
 
-  constructor(private courseService: CoursesService, private dialogRef: MatDialog, private studentService: StudentService, private enrollmentService: EnrollmentService, private authService: AuthenticationService) {
-    this.initialize();
-  }
-
-  public ngOnInit(): void {  }
-
-  private initialize(): void {
-    this.studentService.get().subscribe(students =>{
-      this.student = students[Math.floor(Math.random() * (students.length - 1)) + 1];
-    })
-    this.courseService.get().subscribe(courses =>{
-      this.dataSource = new MatTableDataSource(courses);
-      this.dataSource.paginator = this.paginator;
+  constructor(private courseService: CoursesService,
+              private dialogRef: MatDialog,
+              private studentService: StudentService,
+              private enrollmentService: EnrollmentService,
+              private authService: AuthenticationService,
+              private store: Store<AppState>) {
+    this.getCoursesData();
+    this.store.select(activeSessionSelector).subscribe(session =>{
+      this.isAdmin = session.currentUser.isAdmin;
     });
   }
 
-  public ngAfterViewInit(): void {}
+  public ngOnChanges(changes: SimpleChanges): void {
+    this.getCoursesData();
+  }
 
-  public filterTable(event: KeyboardEvent): void {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  private getCoursesData(): void {
+    this.store.dispatch(loadCourses());
+    this.dataSource = new MatTableDataSource<Course>(undefined);
+    this.store.select(coursesSelector).subscribe(state =>{
+      this.isLoading = state.isLoading;
+    });
 
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+    this.coursesSubscription = this.courseService.get().subscribe(courses =>{
+      this.store.dispatch(loadedCourses({courses: courses}));
+      this.setCoursesData();
+    });
+  }
+
+  private setCoursesData(): void {
+    this.store.select(coursesSelector).subscribe(state =>{
+      this.dataSource = new MatTableDataSource<Course>(state.courses);
+    });
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+  }
+
+  public filterTable(filter: string): void {
+    this.dataSource.filter = filter.trim().toLowerCase();
   }
 
   public onLectureDetail(element: Course):void {
@@ -80,12 +102,17 @@ export class CoursesListComponent implements OnInit {
 
     editDialog.afterClosed().subscribe(result => {
       if(result){
-        let updatedCourse: Course = course;
-        updatedCourse.name = result.name;
-        updatedCourse.description = result.description;
-        updatedCourse.startPeriod = result.startPeriod;
-        updatedCourse.endPeriod = result.endPeriod;
-        updatedCourse.capacity = result.capacity;
+        let updatedCourse: Course = {
+          id: course.id,
+          name: result.name,
+          description:  result.description,
+          startPeriod: result.startPeriod,
+          endPeriod: result.endPeriod,
+          capacity: result.capacity,
+          teacher: course.teacher,
+          students: course.students,
+          lectures: course.lectures
+        }
         this.updateCourse(updatedCourse);
       }
     });
@@ -93,7 +120,8 @@ export class CoursesListComponent implements OnInit {
 
   private updateCourse(updatedCourse: Course): void {
     this.courseService.update(updatedCourse).subscribe(result => {
-      this.initialize();
+      this.getCoursesData();
+
     });
   }
 
@@ -108,7 +136,7 @@ export class CoursesListComponent implements OnInit {
     deleteDialog.afterClosed().subscribe(result=>{
       if(result){
         this.courseService.delete(selectedCourse.id).subscribe(result =>{
-          this.initialize();
+          this.getCoursesData();
         });
       }
     });
@@ -132,29 +160,29 @@ export class CoursesListComponent implements OnInit {
         students: [],
       }
       this.courseService.create(newCourse).subscribe(result =>{
-        this.initialize();
+        this.getCoursesData();
+
       });
     });
   }
 
   public onEnrollment(course: Course): void {
-     const enrollment = {
-        id: undefined,
-        date: undefined,
-        Student: this.student,
-        Course: course
-      }
-      this.enrollmentService.create(enrollment).subscribe(result =>{
-        this.onEnrollmentSuccess(course);
-      });
+    const enrollmentDialog = this.dialogRef.open(EnrollmentListComponent, {
+      width: '70rem',
+      maxHeight: '50rem',
+      data: course,
+      autoFocus: false
+    });
+
+    enrollmentDialog.afterClosed().subscribe(result => this.getCoursesData());
   }
 
   private onEnrollmentSuccess(course: Course) {
-    course.students.push(this.student);
     this.courseService.update(course).subscribe(result =>{
-      this.initialize();
+      this.getCoursesData();
     })
 
   }
+
 }
 

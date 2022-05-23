@@ -3,12 +3,14 @@ import { CommonModule } from '@angular/common';
 import { EnrollmentListComponent } from './enrollment-list/enrollment-list.component';
 import {SharedModule} from "../../shared/shared.module";
 import {EnrollmentRoutingModule} from "./enrollment.routing.module";
+import { AddEnrollmentDialogComponent } from './add-enrollment-dialog/add-enrollment-dialog.component';
 
 
 
 @NgModule({
   declarations: [
-    EnrollmentListComponent
+    EnrollmentListComponent,
+    AddEnrollmentDialogComponent
   ],
   imports: [
     CommonModule,
@@ -16,7 +18,8 @@ import {EnrollmentRoutingModule} from "./enrollment.routing.module";
     SharedModule
   ],
   exports:[
-    EnrollmentListComponent
+    EnrollmentListComponent,
+    AddEnrollmentDialogComponent
   ]
 })
 export class EnrollmentModule { }

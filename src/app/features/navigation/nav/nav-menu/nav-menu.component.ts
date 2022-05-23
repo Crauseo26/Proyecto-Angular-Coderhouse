@@ -16,7 +16,6 @@ export class NavMenuComponent implements OnInit {
     {icon: 'home', label: 'Home'},
     {icon: 'school', label: 'Students'},
     {icon: 'class', label: 'Courses'},
-    {icon: 'playlist_add_check', label: 'Enrollment'},
     {icon: 'people_alt', label: 'Users'}
 
   ]

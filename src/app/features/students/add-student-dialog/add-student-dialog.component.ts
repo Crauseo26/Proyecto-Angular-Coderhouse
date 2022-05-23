@@ -21,7 +21,6 @@ export class AddStudentDialogComponent {
       Validators.minLength(3),
     ]),
     email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', Validators.required),
     gender: new FormControl('', Validators.required),
     address: new FormControl('', [
       Validators.required,

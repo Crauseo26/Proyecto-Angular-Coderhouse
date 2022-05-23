@@ -18,6 +18,7 @@ import {Store} from "@ngrx/store";
 import {activeSessionSelector} from "../../../shared/state/selectors/login.selector";
 import {loadedStudents, loadStudents} from "../../../shared/state/actions/students.actions";
 import {studentsSelector} from "../../../shared/state/selectors/students.selector";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-student-table',
@@ -42,6 +43,7 @@ export class StudentTableComponent implements OnInit, OnChanges, OnDestroy {
   constructor(private route: ActivatedRoute,
               private router: Router,
               private matDialog: MatDialog,
+              private snackBar: MatSnackBar,
               private studentService: StudentService,
               private authService: AuthenticationService,
               private store: Store<AppState>) {
@@ -49,7 +51,7 @@ export class StudentTableComponent implements OnInit, OnChanges, OnDestroy {
     this.getStudentsData();
     this.store.select(activeSessionSelector).subscribe(session =>{
       this.isAdmin = session.currentUser.isAdmin;
-    })
+    });
 
   }
 
@@ -98,9 +100,8 @@ export class StudentTableComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
-  public filterTable(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  public filterTable(filter: string) {
+    this.dataSource.filter = filter.trim().toLowerCase();
   }
 
   public onEditStudent(selectedStudent: Student): void {
@@ -128,8 +129,6 @@ export class StudentTableComponent implements OnInit, OnChanges, OnDestroy {
             profilePhoto: result.profilePhoto,
             id: selectedStudent.id,
             Courses: [],
-            password: result.password,
-            isAdmin: selectedStudent.isAdmin,
           }
           this.updateStudent(updatedStudent);
         }
@@ -139,7 +138,8 @@ export class StudentTableComponent implements OnInit, OnChanges, OnDestroy {
 
   private updateStudent(updatedStudent: Student) {
     this.studentsSubscription = this.studentService.update(updatedStudent).subscribe(result =>{
-      this.refreshData();
+      this.dataSource = new MatTableDataSource<Student>(undefined);
+      this.getStudentsData();
     });
   }
 
@@ -154,7 +154,9 @@ export class StudentTableComponent implements OnInit, OnChanges, OnDestroy {
     dialogRef.afterClosed().subscribe(result=>{
       if(result){
         this.studentsSubscription = this.studentService.delete(selectedStudent.id).subscribe(result =>{
-          this.refreshData();
+          this.dataSource = new MatTableDataSource<Student>(undefined);
+          this.snackBar.open('Student deleted successfully ✔', 'close', {verticalPosition: "top", duration: 1000, horizontalPosition: 'center'})
+          this.getStudentsData();
         });
       }
     });
@@ -168,9 +170,6 @@ export class StudentTableComponent implements OnInit, OnChanges, OnDestroy {
     this.dataSource.paginator = this.paginator;
     this.excellentStudents = this.getExcellentStudents();
     this.failedStudents = this.getFailedStudents();
-    this.dataSource.filterPredicate = function (data, filter) {
-      return data.firstName.indexOf(filter) !== -1 || data.lastName.indexOf(filter) !== -1;
-    }
   }
 
   public onAddStudent(): void {
@@ -190,12 +189,10 @@ export class StudentTableComponent implements OnInit, OnChanges, OnDestroy {
         average: Math.floor((Math.random() * (99 - 45 + 1)) + 45),
         absences: Math.floor((Math.random() * (8 - 1 + 1)) + 1),
         Courses: [],
-        password: result.password,
-        isAdmin: false,
       }
       this.studentsSubscription = this.studentService.create(newStudent).subscribe(result =>{
-        this.dataSource.data.push(result);
-        this.refreshData();
+        this.dataSource = new MatTableDataSource<Student>(undefined);
+        this.getStudentsData();
       });
     });
 
@@ -214,13 +211,9 @@ export class StudentTableComponent implements OnInit, OnChanges, OnDestroy {
     this.store.select(studentsSelector).subscribe(state =>{
       this.isLoading = state.isLoading;
     });
-    this.studentsSubscription = this.studentService.get().subscribe(result => {
-      this.store.dispatch(loadedStudents({students: result}))
+    this.studentsSubscription = this.studentService.get().subscribe(students => {
+      this.store.dispatch(loadedStudents({students: students}))
       this.setStudentsData();
     });
-  }
-
-  private refreshData(): void {
-    this.getStudentsData();
   }
 }

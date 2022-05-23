@@ -5,6 +5,7 @@ import {StudentNamesPipe} from "./pipes/student-names.pipe";
 import {MaterialModule} from "./material/material.module";
 import {DeleteWarningDialogComponent} from "./delete-warning-dialog/delete-warning-dialog.component";
 import { TeacherNamesPipe } from './pipes/teacher-names.pipe';
+import {NgxMatSelectSearchModule} from "ngx-mat-select-search";
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { TeacherNamesPipe } from './pipes/teacher-names.pipe';
     TeacherNamesPipe,
   ],
   imports: [
-    MaterialModule
+    MaterialModule,
+    NgxMatSelectSearchModule
   ],
   exports: [
     StudentRecognitionDirective,
@@ -23,7 +25,8 @@ import { TeacherNamesPipe } from './pipes/teacher-names.pipe';
     StudentNamesPipe,
     TeacherNamesPipe,
     DeleteWarningDialogComponent,
-    MaterialModule
+    MaterialModule,
+    NgxMatSelectSearchModule
   ]
 })
 export class SharedModule { }

@@ -1,5 +1,5 @@
 <div class="dialog-container">
-  <h2 class="dialog-title">new student form</h2>
+  <h2 class="dialog-title">edit student form</h2>
   <form [formGroup]="editStudentFormGroup">
     <mat-dialog-content>
       <!-- First and Last name inputs -->
@@ -45,10 +45,6 @@
       </div>
       <!-- email input -->
       <div class="row">
-        <div class="row">
-          <mat-label class="section-title">Credentials:</mat-label>
-        </div>
-        <div class="col-6">
           <mat-form-field>
             <mat-label>Email</mat-label>
             <input matInput type="text" formControlName="email"required>
@@ -59,17 +55,6 @@
               Don't forget to fill this field cus is <strong>required</strong>
             </mat-error>
           </mat-form-field>
-        </div>
-        <div class="col-6">
-          <mat-form-field>
-            <mat-label>Password</mat-label>
-            <input matInput type="password" formControlName="password"required [type]="isVisible ? 'text' : 'password'">
-            <mat-icon matSuffix (click)="togglePasswordVisibility()">visibility</mat-icon>
-            <mat-error *ngIf="validateRequired('password')">
-              Don't forget to fill this field cus is <strong>required</strong>
-            </mat-error>
-          </mat-form-field>
-        </div>
       </div>
       <!-- birthday datepicker input -->
       <div class="row">
@@ -112,7 +97,7 @@
     </mat-dialog-content>
     <mat-dialog-actions class="dialog-buttons">
       <button mat-button (click)="onBack()">Back</button>
-      <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!editStudentFormGroup.valid">Add</button>
+      <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!editStudentFormGroup.valid">Update</button>
     </mat-dialog-actions>
   </form>
 </div>

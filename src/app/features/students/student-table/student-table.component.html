@@ -9,53 +9,53 @@
       <div class="row search-bar">
         <mat-form-field appearance="standard">
           <mat-label class="search-bar-label">Search</mat-label>
-          <input matInput (keyup)="filterTable($event)" placeholder="student name" #input>
+          <input matInput #filterInput (keyup)="filterTable(filterInput.value)" placeholder="student name">
         </mat-form-field>
       </div>
-      <table mat-table [dataSource]="dataSource" class="full-width-table" matSort matSortActive="average" matSortDirection="desc">
-        <!-- Name Column -->
-        <ng-container matColumnDef="fullName">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Full Name</th>
-          <td mat-cell *matCellDef="let row">{{row.firstName | studentNames:row.lastName}}</td>
-        </ng-container>
+      <div class="students-container">
+        <table mat-table [dataSource]="dataSource" class="full-width-table" matSort matSortActive="average" matSortDirection="desc">
+          <!-- Name Column -->
+          <ng-container matColumnDef="fullName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Full Name</th>
+            <td mat-cell *matCellDef="let row">{{row.firstName | studentNames:row.lastName}}</td>
+          </ng-container>
 
-        <!-- Average Column -->
-        <ng-container matColumnDef="average">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Califications Average</th>
-          <td mat-cell *matCellDef="let row">
-            {{row.average | number: '1.1-1'}}
-            <mat-icon class="excellent-icon" *ngIf="isExcellentStudent(row)" aria-hidden="false">emoji_events</mat-icon>
-            <mat-icon class="excellent-icon" *ngIf="isFailedStudent(row)" aria-hidden="false">thumb_down_alt</mat-icon>
-          </td>
-        </ng-container>
+          <!-- Average Column -->
+          <ng-container matColumnDef="average">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Califications Average</th>
+            <td mat-cell *matCellDef="let row">
+              {{row.average | number: '1.1-1'}}
+              <mat-icon class="excellent-icon" *ngIf="isExcellentStudent(row)" aria-hidden="false">emoji_events</mat-icon>
+              <mat-icon class="excellent-icon" *ngIf="isFailedStudent(row)" aria-hidden="false">thumb_down_alt</mat-icon>
+            </td>
+          </ng-container>
 
-        <!-- Actions Column -->
-        <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
-          <td mat-cell *matCellDef="let row">
-            <button mat-icon-button (click)="onStudentDetail(row)">
-              <mat-icon>info</mat-icon>
-            </button>
-            <button mat-icon-button *ngIf="isAdmin" (click)="onEditStudent(row)">
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button mat-icon-button *ngIf="isAdmin" (click)="onDeleteStudent(row)">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </td>
-        </ng-container>
+          <!-- Actions Column -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
+            <td mat-cell *matCellDef="let row">
+              <button mat-icon-button (click)="onStudentDetail(row)">
+                <mat-icon>info</mat-icon>
+              </button>
+              <button mat-icon-button *ngIf="isAdmin" (click)="onEditStudent(row)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button *ngIf="isAdmin" (click)="onDeleteStudent(row)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"  studentRecognition [student]="isTopTenStudent(row)? row : null"></tr>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns, sticky: true"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"  studentRecognition [student]="isTopTenStudent(row)? row : null"></tr>
 
-        <tr class="mat-row" *matNoDataRow>
-          <td *ngIf="input.value !== ''" class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
-          <td *ngIf="input.value === ''" class="mat-cell" colspan="4">No student data yet...</td>
-        </tr>
-      </table>
-
-      <div class="row justify-content-center loading-spinner" *ngIf="isLoading" >
-        <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+          <tr class="mat-row" *matNoDataRow>
+            <td *ngIf="filterInput.value !== ''" class="mat-cell" colspan="4">No data matching the filter "{{filterInput.value}}"</td>
+          </tr>
+        </table>
+        <div class="row justify-content-center loading-spinner" *ngIf="isLoading" >
+          <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+        </div>
       </div>
       <mat-paginator #paginator
                      [length]="dataSource?.data?.length"

@@ -22,11 +22,6 @@ const routes: Routes = [
     loadChildren: () => import('./features/courses/courses.module').then((m) => m.CoursesModule),
   },
   {
-    path: "Enrollment",
-    canActivate: [AuthorizationGuard],
-    loadChildren: () => import('./features/enrollment/enrollment.module').then((m) => m.EnrollmentModule),
-  },
-  {
     path: "Users",
     canActivate: [AuthorizationGuard],
     loadChildren: () => import('./features/users/users.module').then((m) => m.UsersModule),

@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from "@angular/material/table";
-import {Enrollment} from "../../../shared/models/enollment.model";
+import {Enrollment} from "../../../shared/models/enrollment.model";
 import {Student} from "../../../shared/models/student.model";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";

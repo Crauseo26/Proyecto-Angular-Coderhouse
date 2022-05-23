@@ -1,6 +1,6 @@
 <div class="dialog-container">
   <h2 class="dialog-title">Course form</h2>
-  <form [formGroup]="editCourseFormGoup">
+  <form [formGroup]="editCourseFormGroup">
     <mat-dialog-content>
       <!-- Course Name-->
       <div class="row">
@@ -33,9 +33,9 @@
         <div class="col-6">
           <mat-form-field appearance="standard">
             <mat-label>Start date:</mat-label>
-            <input matInput [matDatepicker]="picker" formControlName="startPeriod" required>
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
+            <input matInput [matDatepicker]="startDate" formControlName="startPeriod" required>
+            <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+            <mat-datepicker #startDate></mat-datepicker>
             <mat-error *ngIf="validateRequired('startPeriod')">
               Don't forget to fill this field cus is <strong>required</strong>
             </mat-error>
@@ -44,9 +44,9 @@
         <div class="col-6">
           <mat-form-field appearance="standard">
             <mat-label>End date:</mat-label>
-            <input matInput [matDatepicker]="picker" formControlName="endPeriod" required>
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
+            <input matInput [matDatepicker]="endDate" formControlName="endPeriod" required>
+            <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+            <mat-datepicker #endDate></mat-datepicker>
             <mat-error *ngIf="validateRequired('endPeriod')">
               Don't forget to fill this field cus is <strong>required</strong>
             </mat-error>
@@ -70,7 +70,7 @@
     </mat-dialog-content>
     <mat-dialog-actions class="dialog-buttons">
       <button mat-button (click)="onBack()">Back</button>
-      <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!editCourseFormGoup.valid">Update</button>
+      <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!editCourseFormGroup.valid">Update</button>
     </mat-dialog-actions>
   </form>
 </div>

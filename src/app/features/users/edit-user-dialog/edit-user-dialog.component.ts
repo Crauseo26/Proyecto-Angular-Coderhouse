@@ -40,7 +40,6 @@ export class EditUserDialogComponent implements OnInit {
       password: this.editUserFormGroup.controls['password'].value,
       avatar: this.editUserFormGroup.controls['avatarURL'].value
     }
-    console.log(updatedUser);
     this.dialogRef.close(updatedUser);
   }
 

@@ -18,7 +18,7 @@
       </button>
       <span class="toolbar-title">Coderhouse</span>
       <span class="spacer"></span>
-      <button mat-button [matMenuTriggerFor]="menu">
+      <button *ngIf="isLoggedIn" mat-button [matMenuTriggerFor]="menu">
         Hi, {{activeUsername}}
         <mat-icon>expand_more</mat-icon>
       </button>

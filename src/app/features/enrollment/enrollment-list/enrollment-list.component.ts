@@ -20,6 +20,9 @@ import {
 } from "../../../shared/state/selectors/enrollments.selector";
 import {Subscription} from "rxjs";
 import {AddEnrollmentDialogComponent} from "../add-enrollment-dialog/add-enrollment-dialog.component";
+import {clone, cloneDeep} from "lodash";
+import {StudentService} from "../../../shared/services/student.service";
+import {CoursesService} from "../../../shared/services/courses.service";
 
 @Component({
   selector: 'app-enrollment-list',
@@ -40,6 +43,8 @@ export class EnrollmentListComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: Course,
     private enrollmentService: EnrollmentService,
+    private studentService: StudentService,
+    private courseService: CoursesService,
     private dialogRef: MatDialog,
     private authService: AuthenticationService,
     private enrollmentDialogRef: MatDialogRef<EnrollmentListComponent>,
@@ -70,7 +75,7 @@ export class EnrollmentListComponent implements OnInit {
 
   private setEnrollmentList(): void {
     this.store.select(enrollmentsListSelector).subscribe( enrollments =>{
-      this.dataSource = new MatTableDataSource<Enrollment>(enrollments);
+      this.dataSource = new MatTableDataSource<Enrollment>(this.getEnrollmentListByCourse(enrollments));
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
     });
@@ -82,13 +87,6 @@ export class EnrollmentListComponent implements OnInit {
   }
 
   ngOnInit(): void {}
-
-  private initialize(): void {
-    this.enrollmentService.get().subscribe((result) => {
-      this.dataSource = new MatTableDataSource(result);
-      this.dataSource.paginator = this.paginator;
-    });
-  }
 
   public onDeleteEnrollment(selectedEnrollment: Enrollment): void {
     const deleteDialog = this.dialogRef.open(DeleteWarningDialogComponent, {
@@ -102,10 +100,23 @@ export class EnrollmentListComponent implements OnInit {
         this.enrollmentService
           .delete(selectedEnrollment.id)
           .subscribe((result) => {
-            this.getEnrollmentData();
+            const updatedStudent = this.updateStudent(selectedEnrollment);
+            this.studentService.update(updatedStudent).subscribe(result =>{
+              const updatedCourse = this.updateCourse(selectedEnrollment);
+              this.courseService.update(updatedCourse).subscribe(result =>{
+                this.getEnrollmentData();
+              });
+            });
           });
       }
     });
+  }
+
+  private updateStudent(enrollment: Enrollment): Student {
+    let updatedStudent = cloneDeep(enrollment.Student);
+    let courseIndex = updatedStudent.Courses.findIndex(course => course.id === enrollment.Course.id);
+    updatedStudent.Courses.splice(courseIndex, 1);
+    return updatedStudent;
   }
 
   public onBack(): void{
@@ -125,6 +136,15 @@ export class EnrollmentListComponent implements OnInit {
         this.getEnrollmentData();
       }
     })
+
+  }
+
+
+  private updateCourse(enrollment: Enrollment): Course {
+    let updatedCourse = cloneDeep(enrollment.Course);
+    let studentIndex = updatedCourse.students.findIndex(student => student.id === enrollment.Student.id);
+    updatedCourse.students.splice(studentIndex, 1);
+    return updatedCourse;
 
   }
 }

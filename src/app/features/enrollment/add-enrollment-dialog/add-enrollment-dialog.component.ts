@@ -57,11 +57,6 @@ export class AddEnrollmentDialogComponent implements OnInit, AfterViewInit {
     this.filteredStudents
       .pipe(take(1), takeUntil(this._onDestroy))
       .subscribe(() => {
-        // setting the compareWith property to a comparison function
-        // triggers initializing the selection according to the initial value of
-        // the form control (i.e. _initializeSelection())
-        // this needs to be done after the filteredBanks are loaded initially
-        // and after the mat-option elements are available
         this.singleSelect.compareWith = (a: Student, b: Student) => a && b && a.id === b.id;
       });
   }
@@ -70,7 +65,7 @@ export class AddEnrollmentDialogComponent implements OnInit, AfterViewInit {
     if (!this.students) {
       return;
     }
-    // get the search keyword
+
     let search = this.studentFilterSelect.value;
     if (!search) {
       this.filteredStudents.next(this.students.slice());
@@ -78,7 +73,6 @@ export class AddEnrollmentDialogComponent implements OnInit, AfterViewInit {
     } else {
       search = search.toLowerCase();
     }
-    // filter the banks
     this.filteredStudents.next(
       this.students.filter(student => student.firstName.toLowerCase().indexOf(search) > -1)
     );

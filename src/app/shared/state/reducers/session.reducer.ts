@@ -10,7 +10,7 @@ export const initialSessionState: SessionState = {
   }
 }
 
-export const loginReducer = createReducer(
+export const sessionReducer = createReducer(
   initialSessionState,
   on(createSession, (state, {currentUser}) => {
       return { ...state, isActive: true, currentUser }

@@ -1,6 +1,19 @@
-<div class="menu-options" [appTooltip]="option.label" *ngFor="let option of menuOptions">
-  <a mat-list-item routerLink="{{option.label}}">
-    <mat-icon>{{option.icon}}</mat-icon>
-  </a>
-  <mat-divider></mat-divider>
+<div class="menu-container">
+  <div class="options">
+    <div class="menu-options" [appTooltip]="option.label" *ngFor="let option of menuOptions">
+      <a mat-list-item routerLink="{{option.label}}">
+        <mat-icon>{{option.icon}}</mat-icon>
+      </a>
+      <mat-divider></mat-divider>
+    </div>
+    <div class="menu-options" *ngIf="isAdmin" appTooltip="Users">
+      <a  mat-list-item routerLink="Users">
+        <mat-icon>people_alt</mat-icon>
+      </a>
+      <mat-divider></mat-divider>
+    </div>
+  </div>
 </div>
+
+
+

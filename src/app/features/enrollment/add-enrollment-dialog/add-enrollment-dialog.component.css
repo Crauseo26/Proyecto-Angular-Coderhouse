@@ -1,0 +1,28 @@
+.title{
+  font-weight: 500;
+  text-transform: uppercase;
+  font-style: italic;
+}
+
+.add-form{
+  justify-content: center;
+  align-items: center;
+
+}
+
+.row{
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.select-student{
+  margin-top: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.buttons{
+  margin-top: 2rem;
+  display: inline-block;
+  text-align: center;
+}

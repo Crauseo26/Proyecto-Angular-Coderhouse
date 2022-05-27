@@ -7,7 +7,7 @@ import {Router} from "@angular/router";
 import {Store} from "@ngrx/store";
 import {AppState} from "../../../shared/state/app.state";
 import {closeSession} from "../../../shared/state/actions/session.actions";
-import {activeSessionSelector} from "../../../shared/state/selectors/login.selector";
+import {activeSessionSelector} from "../../../shared/state/selectors/users.selector";
 import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
@@ -18,6 +18,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 export class NavComponent {
 
   public isLoggedIn = false;
+  public activeUsername!: string;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -27,11 +28,12 @@ export class NavComponent {
 
   constructor(private breakpointObserver: BreakpointObserver,
               private authService: AuthenticationService,
-              private router: Router, private store: Store<AppState>,
-              private snackBar: MatSnackBar
-  ) {
+              private router: Router,
+              private store: Store<AppState>,
+              private snackBar: MatSnackBar) {
     this.store.select(activeSessionSelector).subscribe(session =>{
       this.isLoggedIn = session.isActive;
+      this.activeUsername = session.currentUser.username;
     });
   }
 

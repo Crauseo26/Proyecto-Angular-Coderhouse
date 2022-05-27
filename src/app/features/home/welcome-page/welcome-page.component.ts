@@ -7,7 +7,7 @@ import {Store} from "@ngrx/store";
 import {AppState} from "../../../shared/state/app.state";
 import {createSession} from "../../../shared/state/actions/session.actions";
 import {UserLogin} from "../../../shared/models/user-login.model";
-import {activeSessionSelector} from "../../../shared/state/selectors/login.selector";
+import {activeSessionSelector} from "../../../shared/state/selectors/users.selector";
 
 @Component({
   selector: 'app-welcome-page',

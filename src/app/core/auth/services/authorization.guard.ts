@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {Store} from "@ngrx/store";
 import {AppState} from "../../../shared/state/app.state";
-import {activeSessionSelector} from "../../../shared/state/selectors/login.selector";
+import {activeSessionSelector} from "../../../shared/state/selectors/users.selector";
 
 @Injectable({
   providedIn: 'root'

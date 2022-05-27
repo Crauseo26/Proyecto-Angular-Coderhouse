@@ -11,9 +11,13 @@ import { Student } from '../../../shared/models/student.model';
 import { AuthenticationService } from '../../../core/auth/services/authentication.service';
 import {AppState} from "../../../shared/state/app.state";
 import {Store} from "@ngrx/store";
-import {activeSessionSelector} from "../../../shared/state/selectors/login.selector";
+import {activeSessionSelector} from "../../../shared/state/selectors/users.selector";
 import {loadedEnrollments, loadEnrollments} from "../../../shared/state/actions/enrollment.actions";
-import {enrollmentsSelector} from "../../../shared/state/selectors/enrollment.selector";
+import {
+  enrollmentsListSelector,
+  enrollmentsSelector,
+  loadEnrollmentsSelector
+} from "../../../shared/state/selectors/enrollments.selector";
 import {Subscription} from "rxjs";
 import {AddEnrollmentDialogComponent} from "../add-enrollment-dialog/add-enrollment-dialog.component";
 
@@ -55,25 +59,21 @@ export class EnrollmentListComponent implements OnInit {
 
   private getEnrollmentData(): void {
     this.store.dispatch(loadEnrollments());
-    this.dataSource = new MatTableDataSource<Enrollment>(undefined);
-    this.store.select(enrollmentsSelector).subscribe(state =>{
-      this.isLoading = state.isLoading;
+    this.store.select(loadEnrollmentsSelector).subscribe(isLoading =>{
+      this.isLoading = isLoading;
+      this.dataSource = new MatTableDataSource<Enrollment>(undefined);
     });
 
-    this.enrollmentSubscription = this.enrollmentService.get().subscribe(enrollment =>{
-      const enrollmentListByCourse = this.getEnrollmentListByCourse(enrollment);
-      this.store.dispatch(loadedEnrollments({enrollments: enrollmentListByCourse}));
-      this.setEnrollmentList();
-    });
+    this.setEnrollmentList();
 
   }
 
   private setEnrollmentList(): void {
-    this.store.select(enrollmentsSelector).subscribe(state =>{
-      this.dataSource = new MatTableDataSource<Enrollment>(state.enrollments);
+    this.store.select(enrollmentsListSelector).subscribe( enrollments =>{
+      this.dataSource = new MatTableDataSource<Enrollment>(enrollments);
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
     });
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
   }
 
   private getEnrollmentListByCourse(enrollmentList: Enrollment[]): Enrollment[] {
@@ -83,14 +83,14 @@ export class EnrollmentListComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  private Initialize(): void {
+  private initialize(): void {
     this.enrollmentService.get().subscribe((result) => {
       this.dataSource = new MatTableDataSource(result);
       this.dataSource.paginator = this.paginator;
     });
   }
 
-  public onDeleteCourse(selectedEnrollment: Enrollment): void {
+  public onDeleteEnrollment(selectedEnrollment: Enrollment): void {
     const deleteDialog = this.dialogRef.open(DeleteWarningDialogComponent, {
       width: '25rem',
       height: '10rem',
@@ -98,11 +98,11 @@ export class EnrollmentListComponent implements OnInit {
     });
 
     deleteDialog.afterClosed().subscribe((result) => {
-      if (result && selectedEnrollment.id) {
+      if (result) {
         this.enrollmentService
           .delete(selectedEnrollment.id)
           .subscribe((result) => {
-            this.Initialize();
+            this.getEnrollmentData();
           });
       }
     });
@@ -112,11 +112,10 @@ export class EnrollmentListComponent implements OnInit {
     this.enrollmentDialogRef.close(null);
   }
 
-
   public onEnrollStudent(): void {
     const newStudentEnroll = this.dialogRef.open(AddEnrollmentDialogComponent, {
-      width: '50rem',
-      maxHeight: '15rem',
+      width: '28rem',
+      height: '17rem',
       data: this.data,
       autoFocus: false
     });

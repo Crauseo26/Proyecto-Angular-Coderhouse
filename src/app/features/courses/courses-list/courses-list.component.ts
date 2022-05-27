@@ -17,10 +17,15 @@ import {AuthenticationService} from "../../../core/auth/services/authentication.
 import {AppState} from "../../../shared/state/app.state";
 import {Store} from "@ngrx/store";
 import {loadCourses, loadedCourses} from "../../../shared/state/actions/courses.actions";
-import {coursesSelector} from "../../../shared/state/selectors/courses.selector";
-import {activeSessionSelector} from "../../../shared/state/selectors/login.selector";
+import {
+  coursesListSelector,
+  coursesSelector,
+  loadCoursesSelector
+} from "../../../shared/state/selectors/courses.selector";
+import {activeSessionSelector} from "../../../shared/state/selectors/users.selector";
 import {Subscription} from "rxjs";
 import {EnrollmentListComponent} from "../../enrollment/enrollment-list/enrollment-list.component";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-courses-list',
@@ -51,6 +56,7 @@ export class CoursesListComponent implements OnChanges {
               private studentService: StudentService,
               private enrollmentService: EnrollmentService,
               private authService: AuthenticationService,
+              private snackBar: MatSnackBar,
               private store: Store<AppState>) {
     this.getCoursesData();
     this.store.select(activeSessionSelector).subscribe(session =>{
@@ -64,23 +70,19 @@ export class CoursesListComponent implements OnChanges {
 
   private getCoursesData(): void {
     this.store.dispatch(loadCourses());
-    this.dataSource = new MatTableDataSource<Course>(undefined);
-    this.store.select(coursesSelector).subscribe(state =>{
-      this.isLoading = state.isLoading;
+    this.store.select(loadCoursesSelector).subscribe(isLoading =>{
+      this.isLoading = isLoading;
+      this.dataSource = new MatTableDataSource<Course>(undefined);
     });
-
-    this.coursesSubscription = this.courseService.get().subscribe(courses =>{
-      this.store.dispatch(loadedCourses({courses: courses}));
-      this.setCoursesData();
-    });
+    this.setCoursesData();
   }
 
   private setCoursesData(): void {
-    this.store.select(coursesSelector).subscribe(state =>{
-      this.dataSource = new MatTableDataSource<Course>(state.courses);
+    this.store.select(coursesListSelector).subscribe(courses =>{
+      this.dataSource = new MatTableDataSource<Course>(courses);
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
     });
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
   }
 
   public filterTable(filter: string): void {
@@ -120,8 +122,8 @@ export class CoursesListComponent implements OnChanges {
 
   private updateCourse(updatedCourse: Course): void {
     this.courseService.update(updatedCourse).subscribe(result => {
+      this.snackBar.open('Course updated successfully ✔', 'close', {verticalPosition: "top", duration: 1000, horizontalPosition: 'center'});
       this.getCoursesData();
-
     });
   }
 
@@ -136,6 +138,7 @@ export class CoursesListComponent implements OnChanges {
     deleteDialog.afterClosed().subscribe(result=>{
       if(result){
         this.courseService.delete(selectedCourse.id).subscribe(result =>{
+          this.snackBar.open('Course deleted successfully ✔', 'close', {verticalPosition: "top", duration: 1000, horizontalPosition: 'center'});
           this.getCoursesData();
         });
       }
@@ -160,6 +163,7 @@ export class CoursesListComponent implements OnChanges {
         students: [],
       }
       this.courseService.create(newCourse).subscribe(result =>{
+        this.snackBar.open('Course added successfully ✔', 'close', {verticalPosition: "top", duration: 1000, horizontalPosition: 'center'});
         this.getCoursesData();
 
       });
@@ -175,13 +179,6 @@ export class CoursesListComponent implements OnChanges {
     });
 
     enrollmentDialog.afterClosed().subscribe(result => this.getCoursesData());
-  }
-
-  private onEnrollmentSuccess(course: Course) {
-    this.courseService.update(course).subscribe(result =>{
-      this.getCoursesData();
-    })
-
   }
 
 }

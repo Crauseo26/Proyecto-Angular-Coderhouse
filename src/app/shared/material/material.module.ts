@@ -19,6 +19,8 @@ import {MatDividerModule} from "@angular/material/divider";
 import {MatCardModule} from "@angular/material/card";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {MatMenuModule} from "@angular/material/menu";
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 
 
@@ -41,8 +43,11 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
     MatDatepickerModule, MatNativeDateModule,
     MatSelectModule,
     MatDividerModule,
-    FormsModule, MatCardModule,
-    MatSnackBarModule
+    FormsModule,
+    MatCardModule,
+    MatSnackBarModule,
+    MatMenuModule,
+    MatTooltipModule
   ],
   exports:[
     MatSidenavModule,
@@ -58,12 +63,15 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
-    MatDatepickerModule, MatNativeDateModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     MatSelectModule,
     MatDividerModule,
     FormsModule, MatCardModule,
     MatSnackBarModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatMenuModule,
+    MatTooltipModule
   ]
 })
 export class MaterialModule { }

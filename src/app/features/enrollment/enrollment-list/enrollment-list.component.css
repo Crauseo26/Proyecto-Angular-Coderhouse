@@ -1,0 +1,24 @@
+.title{
+  font-weight: 600;
+  text-transform: uppercase;
+  font-style: italic;
+  margin-left: 3rem;
+}
+
+.enrollment-container{
+  max-height: 60vh;
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+}
+
+.add-enrollment-button{
+  float: right;
+}
+
+.add-enrollment-section{
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+}

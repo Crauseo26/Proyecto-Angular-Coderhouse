@@ -1,0 +1,34 @@
+.users-container{
+  max-height: 60vh;
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+}
+
+.add-user-button{
+  float: right;
+}
+
+.add-user-section{
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.search-bar{
+  padding: 0.7rem;
+  justify-content: center;
+}
+
+.search-bar-label{
+  font-weight: 600;
+  text-transform: uppercase;
+  font-style: italic;
+}
+
+.option-button{
+  width: 2rem;
+  margin: 0;
+  padding: 0;
+}

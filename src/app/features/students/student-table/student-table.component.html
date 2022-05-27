@@ -34,13 +34,13 @@
           <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
             <td mat-cell *matCellDef="let row">
-              <button mat-icon-button (click)="onStudentDetail(row)">
+              <button mat-icon-button (click)="onStudentDetail(row)" matTooltip="details" matTooltipPosition="before">
                 <mat-icon>info</mat-icon>
               </button>
-              <button mat-icon-button *ngIf="isAdmin" (click)="onEditStudent(row)">
+              <button mat-icon-button *ngIf="isAdmin" (click)="onEditStudent(row)" matTooltip="edit" matTooltipPosition="above">
                 <mat-icon>edit</mat-icon>
               </button>
-              <button mat-icon-button *ngIf="isAdmin" (click)="onDeleteStudent(row)">
+              <button mat-icon-button *ngIf="isAdmin" (click)="onDeleteStudent(row)" matTooltip="delete" matTooltipPosition="after">
                 <mat-icon>delete</mat-icon>
               </button>
             </td>

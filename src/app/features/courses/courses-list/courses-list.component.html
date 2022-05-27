@@ -30,9 +30,9 @@
           <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef >Actions</th>
             <td mat-cell *matCellDef="let row">
-              <button mat-icon-button (click)="expandedRow = expandedRow === row ? null : row"><mat-icon>visibility</mat-icon></button>
-              <button mat-icon-button *ngIf="isAdmin" (click)="onEditCourse(row)"><mat-icon>edit</mat-icon></button>
-              <button mat-icon-button *ngIf="isAdmin" (click)="onDeleteCourse(row)"><mat-icon>delete</mat-icon></button>
+              <button mat-icon-button (click)="expandedRow = expandedRow === row ? null : row" matTooltip="see details" matTooltipPosition="before"><mat-icon>visibility</mat-icon></button>
+              <button mat-icon-button *ngIf="isAdmin" (click)="onEditCourse(row)" matTooltip="edit" matTooltipPosition="above"><mat-icon>edit</mat-icon></button>
+              <button mat-icon-button *ngIf="isAdmin" (click)="onDeleteCourse(row)" matTooltip="delete" matTooltipPosition="after"><mat-icon>delete</mat-icon></button>
             </td>
           </ng-container>
           <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->

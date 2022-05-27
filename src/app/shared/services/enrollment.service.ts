@@ -21,7 +21,7 @@ export class EnrollmentService {
   }
 
   public get(): Observable<Enrollment[]> {
-    return this.http.get<Enrollment[]>(this.queryRoute).pipe(catchError(this.handleError), delay(2000));
+    return this.http.get<Enrollment[]>(this.queryRoute).pipe(catchError(this.handleError), delay(1500));
   }
 
   public create(enrollment: Enrollment): Observable<Enrollment> {

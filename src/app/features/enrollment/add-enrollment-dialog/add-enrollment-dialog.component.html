@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-fluid add-form">
   <div class="row">
     <mat-label class="title">
       New Enrollment to: {{data.name}} course
@@ -6,11 +6,11 @@
   </div>
   <div class="row">
     <mat-dialog-content>
-      <mat-form-field>
+      <mat-form-field class="select-student">
         <mat-label>Student</mat-label>
-        <mat-select placeholder="search the student to enroll" [formControl]="studentSelect" #singleSelect>
+        <mat-select [formControl]="studentSelect" #singleSelect>
           <mat-option>
-            <ngx-mat-select-search [formControl]="studentFilterSelect"></ngx-mat-select-search>
+            <ngx-mat-select-search placeholderLabel="search the student to enroll" [formControl]="studentFilterSelect"></ngx-mat-select-search>
           </mat-option>
           <mat-option *ngFor="let student of filteredStudents | async" [value]="student">
             {{student.firstName | studentNames: student.lastName}}
@@ -18,10 +18,9 @@
         </mat-select>
       </mat-form-field>
     </mat-dialog-content>
-    <mat-dialog-actions>
-      <button mat-button (click)="onBack()">Back</button>
-      <button mat-raised-button color="primary" type="submit" (click)="onSubmit()">Enroll</button>
-
+    <mat-dialog-actions class="buttons">
+        <button mat-button (click)="onBack()">Back</button>
+        <button mat-raised-button color="primary" type="submit" (click)="onSubmit()">Enroll</button>
     </mat-dialog-actions>
   </div>
 </div>

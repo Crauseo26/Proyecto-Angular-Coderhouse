@@ -16,7 +16,7 @@ export class StudentService {
   }
 
   public get(): Observable<Student[]> {
-    return this.http.get<Student[]>(this.queryRoute).pipe(catchError(this.handleError), delay(2000));
+    return this.http.get<Student[]>(this.queryRoute).pipe(catchError(this.handleError), delay(1500));
   }
 
   public create(student: Student): Observable<Student> {

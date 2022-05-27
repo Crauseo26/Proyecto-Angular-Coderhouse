@@ -15,6 +15,7 @@
 .dialog-title{
   text-transform: capitalize;
   font-weight: 500;
+  font-style: italic;
 }
 
 .dialog-buttons{

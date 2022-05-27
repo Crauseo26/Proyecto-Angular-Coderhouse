@@ -18,7 +18,7 @@ export class CoursesService {
   }
 
   public get(): Observable<Course[]> {
-      return this.http.get<Course[]>(this.queryRoute).pipe(catchError(this.handleError), delay(2000));
+      return this.http.get<Course[]>(this.queryRoute).pipe(catchError(this.handleError), delay(1500));
   }
 
   public getCoursePhoto(): Observable<any>{
@@ -45,8 +45,6 @@ export class CoursesService {
     }else{
       console.warn('Backend Error', error.status, error.message)
     }
-
     return throwError(() => 'HTTP Request Error:');
-
   }
 }
